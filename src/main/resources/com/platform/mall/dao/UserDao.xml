@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platform.mall.dao.UserDao">
+    <select id="getRolebyUserId" resultType="com.platform.mall.bean.SysRole">
+        select a.id id,
+               a.role_name roleName,
+               a.create_time createTime,
+               a.description description,
+        from sys_role a inner join sys_user_role b on a.id = b.role_id
+        where b.user_id = #{userId} and a.status = 1
+    </select>
+    <select id="getMenubyRoleId" resultType="com.platform.mall.bean.SysMenu">
+        select a.id id,
+               a.parent_id parentId,
+               a.menu_name menuName,
+               a.create_time createTime,
+               a.icon icon,
+               a.description description,
+               a.url url
+        from sys_menu a inner join sys_role_menu b on a.id = b.menu_id
+        where b.role_id = #{roleId} and a.status = 1
+    </select>
+    <select id="getAuthoritybyRoleId" resultType="com.platform.mall.bean.SysActionAuthority">
+        select a.id id,
+        a.parent_id parentId,
+        a.name name,
+        a.create_time createTime,
+        a.icon icon,
+        a.description description,
+        a.front_key frontKey
+        from sys_action_authority a inner join sys_role_authority b on a.id = b.authority_id
+        where b.role_id = #{roleId} and a.status = 1
+    </select>
+    <insert id="batchInsertUserRoleRelation">
+        INSERT INTO sys_user_role (user_id, role_id) VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{userId,jdbcType=BIGINT},
+            #{item,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+    <insert id="batchInsertRoleMenuRelation">
+        INSERT INTO sys_role_menu (role_id, menu_id) VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+        (#{roleId,jdbcType=BIGINT},
+        #{item,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+    <insert id="batchInsertRoleAuthorityRelation">
+        INSERT INTO sys_role_authority (role_id, authority_id) VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{roleId,jdbcType=BIGINT},
+            #{item,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+</mapper>

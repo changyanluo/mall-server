@@ -68,6 +68,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public List<SysMenu> getUserMenuList(long userId) {
+        return userDao.getMenubyUserId((userId));
+    }
+
+    @Override
     public List<SysRole> getUserRoleList(long userId) {
         return userDao.getRolebyUserId(userId);
     }

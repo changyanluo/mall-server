@@ -1,5 +1,6 @@
 package com.platform.mall.service;
 
+import com.platform.mall.bean.SysMenu;
 import com.platform.mall.bean.SysRole;
 import com.platform.mall.bean.SysUser;
 import com.platform.mall.component.PageList;
@@ -29,6 +30,9 @@ public interface UserService {
 
     //获取用户角色
     List<SysRole> getUserRoleList(long userId);
+
+    //获取用户菜单
+    List<SysMenu> getUserMenuList(long userId);
 
     //更新用户角色
     int updateUserRole(long userId,List<Long> roleIdList);

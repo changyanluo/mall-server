@@ -19,7 +19,6 @@ public class MenuServiceImpl implements MenuService{
     @Autowired
     private SysMenuMapper sysMenuMapper;
 
-
     @Override
     public List<UserMenu> getList(String name) {
         SysMenuExample example = new SysMenuExample();

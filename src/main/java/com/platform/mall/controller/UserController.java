@@ -1,10 +1,13 @@
 package com.platform.mall.controller;
 
+import com.platform.mall.bean.SysMenu;
 import com.platform.mall.bean.SysRole;
 import com.platform.mall.bean.SysUser;
 import com.platform.mall.component.PageList;
 import com.platform.mall.component.Result;
+import com.platform.mall.dto.UserMenu;
 import com.platform.mall.service.UserService;
+import com.platform.mall.service.impl.MenuServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private MenuServiceImpl menuService;
 
     @ApiOperation("用户登录")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
@@ -44,6 +49,13 @@ public class UserController {
     @RequestMapping(value = "/getUserRoleList",method = RequestMethod.POST)
     public Result<List<SysRole>> getUserRoleList(@RequestParam(value = "userId") long userId){
         return Result.success(userService.getUserRoleList(userId));
+    }
+
+    @ApiOperation("获取用户菜单")
+    @RequestMapping(value = "/getUserMenuList",method = RequestMethod.POST)
+    public Result<List<UserMenu>> getUserMenuList(@RequestParam(value = "userId") long userId){
+        List<SysMenu>  menus = userService.getUserMenuList(userId);
+        return Result.success(menuService.treeList((menus)));
     }
 
     @ApiOperation("新增用户")

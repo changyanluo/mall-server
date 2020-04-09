@@ -5,9 +5,23 @@
         select a.id id,
                a.role_name roleName,
                a.create_time createTime,
-               a.description description,
+               a.description description
         from sys_role a inner join sys_user_role b on a.id = b.role_id
         where b.user_id = #{userId} and a.status = 1
+    </select>
+    <select id="getMenubyUserId" resultType="com.platform.mall.bean.SysMenu">
+        select  c.id id,
+        c.parent_id parentId,
+        c.menu_name menuName,
+        c.create_time createTime,
+        c.icon icon,
+        c.description description,
+        c.level level,
+        c.url url
+        from
+        sys_role a inner join sys_user_role  b inner join sys_menu c inner join sys_role_menu d
+        on a.id = b.role_id and a.id = d.role_id and c.id = d.menu_id
+        where b.user_id = #{userId} and a.status = 1 and c.status = 1
     </select>
     <select id="getMenubyRoleId" resultType="com.platform.mall.bean.SysMenu">
         select a.id id,
@@ -16,6 +30,7 @@
                a.create_time createTime,
                a.icon icon,
                a.description description,
+               a.level level,
                a.url url
         from sys_menu a inner join sys_role_menu b on a.id = b.menu_id
         where b.role_id = #{roleId} and a.status = 1

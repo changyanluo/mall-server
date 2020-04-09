@@ -43,9 +43,9 @@ public class RoleController {
 
     @ApiOperation("获取角色菜单")
     @RequestMapping(value = "/getRoleMenuList", method = RequestMethod.POST)
-    public Result<List<UserMenu>> getRoleMenuList(@RequestParam("roleId") long roleId) {
+    public Result<List<SysMenu>> getRoleMenuList(@RequestParam("roleId") long roleId) {
         List<SysMenu> menus = roleService.getRoleMenu(roleId);
-        return Result.success(menuService.treeList(menus));
+        return Result.success(menus);
     }
 
     @ApiOperation("获取角色权限按钮")

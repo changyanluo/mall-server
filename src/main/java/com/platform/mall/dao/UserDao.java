@@ -14,6 +14,8 @@ public interface UserDao {
 
     List<SysMenu> getMenubyRoleId(@Param("roleId") long roleId);
 
+    List<SysMenu> getMenubyUserId(@Param("userId") long userId);
+
     List<SysActionAuthority> getAuthoritybyRoleId(@Param("roleId") long roleId);
 
     int batchInsertUserRoleRelation(@Param("userId") long userId,@Param("list") List<Long> roleIds);

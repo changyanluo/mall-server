@@ -515,76 +515,6 @@ public class SysLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andInvokeStackIsNull() {
-            addCriterion("invoke_stack is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackIsNotNull() {
-            addCriterion("invoke_stack is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackEqualTo(String value) {
-            addCriterion("invoke_stack =", value, "invokeStack");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackNotEqualTo(String value) {
-            addCriterion("invoke_stack <>", value, "invokeStack");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackGreaterThan(String value) {
-            addCriterion("invoke_stack >", value, "invokeStack");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackGreaterThanOrEqualTo(String value) {
-            addCriterion("invoke_stack >=", value, "invokeStack");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackLessThan(String value) {
-            addCriterion("invoke_stack <", value, "invokeStack");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackLessThanOrEqualTo(String value) {
-            addCriterion("invoke_stack <=", value, "invokeStack");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackLike(String value) {
-            addCriterion("invoke_stack like", value, "invokeStack");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackNotLike(String value) {
-            addCriterion("invoke_stack not like", value, "invokeStack");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackIn(List<String> values) {
-            addCriterion("invoke_stack in", values, "invokeStack");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackNotIn(List<String> values) {
-            addCriterion("invoke_stack not in", values, "invokeStack");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackBetween(String value1, String value2) {
-            addCriterion("invoke_stack between", value1, value2, "invokeStack");
-            return (Criteria) this;
-        }
-
-        public Criteria andInvokeStackNotBetween(String value1, String value2) {
-            addCriterion("invoke_stack not between", value1, value2, "invokeStack");
-            return (Criteria) this;
-        }
-
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
@@ -702,6 +632,66 @@ public class SysLogExample {
 
         public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
             addCriterion("create_time not between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanIsNull() {
+            addCriterion("timespan is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanIsNotNull() {
+            addCriterion("timespan is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanEqualTo(Integer value) {
+            addCriterion("timespan =", value, "timespan");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanNotEqualTo(Integer value) {
+            addCriterion("timespan <>", value, "timespan");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanGreaterThan(Integer value) {
+            addCriterion("timespan >", value, "timespan");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanGreaterThanOrEqualTo(Integer value) {
+            addCriterion("timespan >=", value, "timespan");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanLessThan(Integer value) {
+            addCriterion("timespan <", value, "timespan");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanLessThanOrEqualTo(Integer value) {
+            addCriterion("timespan <=", value, "timespan");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanIn(List<Integer> values) {
+            addCriterion("timespan in", values, "timespan");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanNotIn(List<Integer> values) {
+            addCriterion("timespan not in", values, "timespan");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanBetween(Integer value1, Integer value2) {
+            addCriterion("timespan between", value1, value2, "timespan");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimespanNotBetween(Integer value1, Integer value2) {
+            addCriterion("timespan not between", value1, value2, "timespan");
             return (Criteria) this;
         }
     }

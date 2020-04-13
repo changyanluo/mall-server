@@ -13,6 +13,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -22,7 +25,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.*;
 
+
+//记录每个请求的日志
 @Aspect
 @Component
 public class LogAspect {
@@ -36,7 +43,7 @@ public class LogAspect {
 
     @Around("webLog()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        long startTime = System.currentTimeMillis();
+        Long startTime = System.currentTimeMillis();
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         SysLog sysLog = new SysLog();
@@ -47,10 +54,16 @@ public class LogAspect {
             ApiOperation log = method.getAnnotation(ApiOperation.class);
             sysLog.setActionName(log.value());
         }
-        sysLog.setMessageIncoming(getRequestString(request.getInputStream()));
+
+        sysLog.setMessageIncoming(getParameter(method, joinPoint.getArgs()).toString());
         sysLog.setActionUrl(request.getRequestURI());
+        Object userName = request.getAttribute("userName");
+        if(userName != null){
+            sysLog.setUserName(userName.toString());
+        }
         try {
             Object result = joinPoint.proceed();
+            sysLog.setMessageReturned(request.toString());
             return result;
         }
         catch (Exception ex){
@@ -59,45 +72,43 @@ public class LogAspect {
             return null;
         }
         finally {
-            long endTime = System.currentTimeMillis();
+            Long timespan = System.currentTimeMillis() - startTime;
+            sysLog.setTimespan(timespan.intValue());
+            sysLog.setCreateTime(new Date());
             sysLogMapper.insert(sysLog);
         }
     }
 
-    private String getRequestString (InputStream inputStream) {
-        StringBuilder stringBuilder = new StringBuilder();
-        BufferedReader bufferedReader = null;
-        try {
-            if (inputStream != null) {
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                char[] charBuffer = new char[128];
-                int bytesRead = -1;
-                while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
-                    stringBuilder.append(charBuffer, 0, bytesRead);
-                }
-            } else {
-                stringBuilder.append("");
+    /**
+     * 根据方法和传入的参数获取请求参数
+     */
+    private Object getParameter(Method method, Object[] args) {
+        List<Object> argList = new ArrayList<>();
+        Parameter[] parameters = method.getParameters();
+        for (int i = 0; i < parameters.length; i++) {
+            //将RequestBody注解修饰的参数作为请求参数
+            RequestBody requestBody = parameters[i].getAnnotation(RequestBody.class);
+            if (requestBody != null) {
+                argList.add(args[i]);
             }
-        } catch (IOException ex) {
-
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
+            //将RequestParam注解修饰的参数作为请求参数
+            RequestParam requestParam = parameters[i].getAnnotation(RequestParam.class);
+            if (requestParam != null) {
+                Map<String, Object> map = new HashMap<>();
+                String key = parameters[i].getName();
+                if (!StringUtils.isEmpty(requestParam.value())) {
+                    key = requestParam.value();
                 }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
+                map.put(key, args[i]);
+                argList.add(map);
             }
         }
-        return stringBuilder.toString();
+        if (argList.size() == 0) {
+            return null;
+        } else if (argList.size() == 1) {
+            return argList.get(0);
+        } else {
+            return argList;
+        }
     }
 }

@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService{
             userCache.setUserName(userName);
             userCache.setAuthorities(authValueList);
             String sessionId = RequestContextHolder.getRequestAttributes().getSessionId();
-            redisService.set(sessionId,userCache,timeout);
+            redisService.set(sessionId,userCache.toString(),timeout);
             return authNameList;
         }
         else

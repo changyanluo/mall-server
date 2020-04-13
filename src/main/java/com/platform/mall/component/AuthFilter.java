@@ -3,6 +3,7 @@ package com.platform.mall.component;
 import com.platform.mall.dto.UserCache;
 import com.platform.mall.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
+//请求过滤类，用于验证身份和权限
 @WebFilter(urlPatterns = "/*")
 public class AuthFilter implements Filter {
 
@@ -23,17 +25,18 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         try {
             //身份验证
-            String sessionId = request.getSession().getId();
-            if(redisService.hasKey(sessionId)){
+            String token = request.getHeader("Authorization");
+            if(redisService.hasKey(token)){
                 //身份验证通过，开始权限验证
-                UserCache userCache = (UserCache)redisService.get(sessionId);
-                String url = request.getRequestURI();
-                if(!url.equals("/user/login")){
-                    if(!userCache.getAuthorities().contains(url)){
-                        response.getWriter().write(Result.failed("没有权限!").toString());
-                        return;
-                    }
-                }
+//                UserCache userCache = (UserCache)redisService.get(token);
+//                request.setAttribute("userName",userCache.getUserName());
+//                String url = request.getRequestURI();
+//                if(!url.equals("/user/login")){
+//                    if(!userCache.getAuthorities().contains(url)){
+//                        response.getWriter().write(Result.failed("没有权限!").toString());
+//                        return;
+//                    }
+//                }
                filterChain.doFilter(servletRequest,servletResponse);
             }
             else{

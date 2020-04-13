@@ -16,11 +16,11 @@ public class SysLog implements Serializable {
 
     private String messageReturned;
 
-    private String invokeStack;
-
     private Integer type;
 
     private Date createTime;
+
+    private Integer timespan;
 
     private static final long serialVersionUID = 1L;
 
@@ -72,14 +72,6 @@ public class SysLog implements Serializable {
         this.messageReturned = messageReturned;
     }
 
-    public String getInvokeStack() {
-        return invokeStack;
-    }
-
-    public void setInvokeStack(String invokeStack) {
-        this.invokeStack = invokeStack;
-    }
-
     public Integer getType() {
         return type;
     }
@@ -96,6 +88,14 @@ public class SysLog implements Serializable {
         this.createTime = createTime;
     }
 
+    public Integer getTimespan() {
+        return timespan;
+    }
+
+    public void setTimespan(Integer timespan) {
+        this.timespan = timespan;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -108,9 +108,9 @@ public class SysLog implements Serializable {
         sb.append(", actionUrl=").append(actionUrl);
         sb.append(", messageIncoming=").append(messageIncoming);
         sb.append(", messageReturned=").append(messageReturned);
-        sb.append(", invokeStack=").append(invokeStack);
         sb.append(", type=").append(type);
         sb.append(", createTime=").append(createTime);
+        sb.append(", timespan=").append(timespan);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

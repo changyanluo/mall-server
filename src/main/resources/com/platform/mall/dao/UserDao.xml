@@ -10,7 +10,7 @@
         where b.user_id = #{userId} and a.status = 1
     </select>
     <select id="getMenubyUserId" resultType="com.platform.mall.bean.SysMenu">
-        select  c.id id,
+        select DISTINCT c.id id,
         c.parent_id parentId,
         c.menu_name menuName,
         c.create_time createTime,
@@ -25,7 +25,7 @@
     </select>
     <select id="getAuthoritybyUserId" resultType="com.platform.mall.bean.SysActionAuthority">
         SELECT
-        distinct c.name name, c.value value
+        DISTINCT c.name name, c.value value
         FROM
         sys_role a
         INNER JOIN

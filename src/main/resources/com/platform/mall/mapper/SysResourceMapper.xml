@@ -8,7 +8,9 @@
     <result column="encode" jdbcType="VARCHAR" property="encode" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.platform.mall.bean.SysResource">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,8 +71,27 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, url, encode, type, create_time, description
+    id, name, url, encode, type, create_time
   </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.platform.mall.bean.SysResourceExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sys_resource
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" parameterType="com.platform.mall.bean.SysResourceExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -85,9 +106,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from sys_resource
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -109,7 +132,7 @@
       type, create_time, description
       )
     values (#{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{encode,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}
+      #{type,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{description,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.platform.mall.bean.SysResource">
@@ -154,7 +177,7 @@
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="description != null">
-        #{description,jdbcType=VARCHAR},
+        #{description,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -186,9 +209,22 @@
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.description != null">
-        description = #{record.description,jdbcType=VARCHAR},
+        description = #{record.description,jdbcType=LONGVARCHAR},
       </if>
     </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update sys_resource
+    set id = #{record.id,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      encode = #{record.encode,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      description = #{record.description,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -200,8 +236,7 @@
       url = #{record.url,jdbcType=VARCHAR},
       encode = #{record.encode,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      description = #{record.description,jdbcType=VARCHAR}
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -225,9 +260,19 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
+        description = #{description,jdbcType=LONGVARCHAR},
       </if>
     </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.platform.mall.bean.SysResource">
+    update sys_resource
+    set name = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      encode = #{encode,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.platform.mall.bean.SysResource">
@@ -236,8 +281,7 @@
       url = #{url,jdbcType=VARCHAR},
       encode = #{encode,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      description = #{description,jdbcType=VARCHAR}
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

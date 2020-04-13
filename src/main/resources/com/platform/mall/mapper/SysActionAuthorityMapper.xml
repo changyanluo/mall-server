@@ -6,8 +6,6 @@
     <result column="parent_id" jdbcType="BIGINT" property="parentId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="value" jdbcType="VARCHAR" property="value" />
-    <result column="front_key" jdbcType="VARCHAR" property="frontKey" />
-    <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="description" jdbcType="VARCHAR" property="description" />
@@ -71,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, parent_id, name, value, front_key, icon, status, create_time, description
+    id, parent_id, name, value, status, create_time, description
   </sql>
   <select id="selectByExample" parameterType="com.platform.mall.bean.SysActionAuthorityExample" resultMap="BaseResultMap">
     select
@@ -108,11 +106,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into sys_action_authority (parent_id, name, value, 
-      front_key, icon, status, 
-      create_time, description)
+      status, create_time, description
+      )
     values (#{parentId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
-      #{frontKey,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR})
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.platform.mall.bean.SysActionAuthority">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -128,12 +126,6 @@
       </if>
       <if test="value != null">
         value,
-      </if>
-      <if test="frontKey != null">
-        front_key,
-      </if>
-      <if test="icon != null">
-        icon,
       </if>
       <if test="status != null">
         status,
@@ -154,12 +146,6 @@
       </if>
       <if test="value != null">
         #{value,jdbcType=VARCHAR},
-      </if>
-      <if test="frontKey != null">
-        #{frontKey,jdbcType=VARCHAR},
-      </if>
-      <if test="icon != null">
-        #{icon,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -193,12 +179,6 @@
       <if test="record.value != null">
         value = #{record.value,jdbcType=VARCHAR},
       </if>
-      <if test="record.frontKey != null">
-        front_key = #{record.frontKey,jdbcType=VARCHAR},
-      </if>
-      <if test="record.icon != null">
-        icon = #{record.icon,jdbcType=VARCHAR},
-      </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
@@ -219,8 +199,6 @@
       parent_id = #{record.parentId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
       value = #{record.value,jdbcType=VARCHAR},
-      front_key = #{record.frontKey,jdbcType=VARCHAR},
-      icon = #{record.icon,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       description = #{record.description,jdbcType=VARCHAR}
@@ -240,12 +218,6 @@
       <if test="value != null">
         value = #{value,jdbcType=VARCHAR},
       </if>
-      <if test="frontKey != null">
-        front_key = #{frontKey,jdbcType=VARCHAR},
-      </if>
-      <if test="icon != null">
-        icon = #{icon,jdbcType=VARCHAR},
-      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -263,8 +235,6 @@
     set parent_id = #{parentId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
       value = #{value,jdbcType=VARCHAR},
-      front_key = #{frontKey,jdbcType=VARCHAR},
-      icon = #{icon,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       description = #{description,jdbcType=VARCHAR}

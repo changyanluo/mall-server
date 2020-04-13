@@ -3,5 +3,5 @@ spring:
     active: dev
 
 session:
-  timeout: 10*1000
+  timeout: 600000
 

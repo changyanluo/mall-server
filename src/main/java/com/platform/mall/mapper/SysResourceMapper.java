@@ -16,15 +16,21 @@ public interface SysResourceMapper {
 
     int insertSelective(SysResource record);
 
+    List<SysResource> selectByExampleWithBLOBs(SysResourceExample example);
+
     List<SysResource> selectByExample(SysResourceExample example);
 
     SysResource selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") SysResource record, @Param("example") SysResourceExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") SysResource record, @Param("example") SysResourceExample example);
+
     int updateByExample(@Param("record") SysResource record, @Param("example") SysResourceExample example);
 
     int updateByPrimaryKeySelective(SysResource record);
+
+    int updateByPrimaryKeyWithBLOBs(SysResource record);
 
     int updateByPrimaryKey(SysResource record);
 }

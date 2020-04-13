@@ -12,10 +12,6 @@ public class SysActionAuthority implements Serializable {
 
     private String value;
 
-    private String frontKey;
-
-    private String icon;
-
     private Integer status;
 
     private Date createTime;
@@ -56,22 +52,6 @@ public class SysActionAuthority implements Serializable {
         this.value = value;
     }
 
-    public String getFrontKey() {
-        return frontKey;
-    }
-
-    public void setFrontKey(String frontKey) {
-        this.frontKey = frontKey;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
     public Integer getStatus() {
         return status;
     }
@@ -106,8 +86,6 @@ public class SysActionAuthority implements Serializable {
         sb.append(", parentId=").append(parentId);
         sb.append(", name=").append(name);
         sb.append(", value=").append(value);
-        sb.append(", frontKey=").append(frontKey);
-        sb.append(", icon=").append(icon);
         sb.append(", status=").append(status);
         sb.append(", createTime=").append(createTime);
         sb.append(", description=").append(description);

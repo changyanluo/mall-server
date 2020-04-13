@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserService {
 
     //用户登录
-    String login(String userName,String password);
+    List<String> login(String userName,String password);
 
     //登出
     int logoutbyUserName(String userName);

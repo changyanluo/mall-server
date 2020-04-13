@@ -12,7 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.context.request.RequestContextHolder;
 import java.util.Date;
 import java.util.List;
 
@@ -28,13 +28,15 @@ public class UserController {
 
     @ApiOperation("用户登录")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public Result login(@RequestParam("userName") String userName,@RequestParam("password") String password)
+    public Result<List<String>> login(@RequestParam("userName") String userName,@RequestParam("password") String password)
     {
-        String logRet = userService.login(userName,password);
-        if(logRet == null)
+        List<String> authorities = userService.login(userName,password);
+        if(authorities == null)
             return Result.failed("用户名或密码不正确");
-        else
-            return Result.success("success");
+        else {
+
+            return Result.success(RequestContextHolder.getRequestAttributes().getSessionId(), authorities);
+        }
     }
 
     @ApiOperation("分页获取用户列表")

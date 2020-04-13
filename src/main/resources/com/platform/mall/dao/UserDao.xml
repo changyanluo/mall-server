@@ -23,6 +23,22 @@
         on a.id = b.role_id and a.id = d.role_id and c.id = d.menu_id
         where b.user_id = #{userId} and a.status = 1 and c.status = 1
     </select>
+    <select id="getAuthoritybyUserId" resultType="com.platform.mall.bean.SysActionAuthority">
+        SELECT
+        distinct c.name name, c.value value
+        FROM
+        sys_role a
+        INNER JOIN
+        sys_user_role b
+        INNER JOIN
+        sys_action_authority c
+        INNER JOIN
+        sys_role_authority d ON a.id = b.role_id AND a.id = d.role_id
+        AND c.id = d.authority_id
+        WHERE
+        b.user_id = 1 AND a.status = 1
+        AND c.status = 1
+    </select>
     <select id="getMenubyRoleId" resultType="com.platform.mall.bean.SysMenu">
         select a.id id,
                a.parent_id parentId,

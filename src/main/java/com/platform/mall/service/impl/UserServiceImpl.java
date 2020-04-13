@@ -4,15 +4,20 @@ import com.github.pagehelper.PageHelper;
 import com.platform.mall.bean.*;
 import com.platform.mall.component.PageList;
 import com.platform.mall.dao.UserDao;
+import com.platform.mall.dto.UserCache;
 import com.platform.mall.mapper.SysUserMapper;
 import com.platform.mall.mapper.SysUserRoleMapper;
+import com.platform.mall.service.RedisService;
 import com.platform.mall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.context.request.RequestContextHolder;
 
-import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -23,15 +28,36 @@ public class UserServiceImpl implements UserService{
     private UserDao userDao;
     @Autowired
     private SysUserRoleMapper sysUserRoleMapper;
+    @Autowired
+    private RedisService redisService;
+    @Value("${session.timeout}")
+    private Long timeout;
+
 
     @Override
-    public String login(String userName, String password) {
+    public List<String> login(String userName, String password) {
+        //校验账号密码
         SysUserExample example = new SysUserExample();
         example.createCriteria().andUserNameEqualTo(userName);
-        example.createCriteria().andPasswordEqualTo(Base64.getEncoder().encodeToString(password.getBytes()));
+        example.createCriteria().andPasswordEqualTo(DigestUtils.md5DigestAsHex(password.getBytes()));
         List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
-        if(sysUsers.size() > 0) return "";
-        else return null;
+        if(sysUsers.size() > 0){
+            //获取用户权限
+            List<SysActionAuthority> authorities = userDao.getAuthoritybyUserId(
+                    sysUsers.get(0).getId()
+            );
+            List<String> authNameList = authorities.stream().map(e->e.getName()).collect(Collectors.toList());
+            List<String> authValueList = authorities.stream().map(e->e.getValue()).collect(Collectors.toList());
+            //将用户名和操作权限存入redis
+            UserCache userCache = new UserCache();
+            userCache.setUserName(userName);
+            userCache.setAuthorities(authValueList);
+            String sessionId = RequestContextHolder.getRequestAttributes().getSessionId();
+            redisService.set(sessionId,userCache,timeout);
+            return authNameList;
+        }
+        else
+            return null;
     }
 
     @Override

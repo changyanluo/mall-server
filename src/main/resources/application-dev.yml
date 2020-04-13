@@ -3,3 +3,9 @@ spring:
     url: jdbc:mysql://106.15.33.116:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
     password: Jingxin..manji12
+
+  redis:
+    host: 106.15.33.116
+    port: 6379
+    password: 123456redis
+

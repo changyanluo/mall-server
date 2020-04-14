@@ -47,7 +47,10 @@ public class UserServiceImpl implements UserService{
                     sysUsers.get(0).getId()
             );
             List<String> authNameList = authorities.stream().map(e->e.getName()).collect(Collectors.toList());
-            List<String> authValueList = authorities.stream().map(e->e.getValue()).collect(Collectors.toList());
+            List<String> authValueList = authorities.stream()
+                    .filter(e->!"".equals(e.getValue()))
+                    .map(e->e.getValue())
+                    .collect(Collectors.toList());
             //将用户名和操作权限存入redis
             UserCache userCache = new UserCache();
             userCache.setUserName(userName);

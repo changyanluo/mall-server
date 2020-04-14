@@ -2,6 +2,7 @@ package com.platform.mall.service;
 
 import com.platform.mall.bean.SysMenu;
 import com.platform.mall.dto.UserMenu;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,5 +18,6 @@ public interface MenuService {
     int update(SysMenu menu);
 
     //删除
+    @Transactional
     int deletebyId(long id);
 }

@@ -1,7 +1,5 @@
 package com.platform.mall.dto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.Serializable;
 import java.util.List;
 

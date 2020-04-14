@@ -1,7 +1,9 @@
 package com.platform.mall.component;
 
+import java.io.Serializable;
+
 //统一返回数据格式
-public class Result<T> {
+public class Result<T> implements Serializable {
 
     private int code;
     private String message;
@@ -66,5 +68,18 @@ public class Result<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("{code:");
+        sb.append(code);
+        sb.append(",message:");
+        sb.append(message);
+        sb.append(",data:");
+        sb.append(data == null?"":data.toString());
+        sb.append("}");
+        return sb.toString();
     }
 }

@@ -5,6 +5,7 @@ import com.platform.mall.bean.SysMenu;
 import com.platform.mall.bean.SysRole;
 import com.platform.mall.component.PageList;
 import com.platform.mall.dto.UserMenu;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,11 +31,13 @@ public interface RoleService {
     List<SysActionAuthority> getRoleAuthority(long roleId);
 
     //更新角色权限
+    @Transactional
     int updateRoleAuthority(long roleId,List<Long> authorityIds);
 
     //获取角色菜单
     List<SysMenu> getRoleMenu(long roleId);
 
     //更新角色菜单
+    @Transactional
     int updateRoleMenu(long roleId,List<Long> menuIds);
 }

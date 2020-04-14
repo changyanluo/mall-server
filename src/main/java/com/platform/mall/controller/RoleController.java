@@ -3,10 +3,8 @@ package com.platform.mall.controller;
 import com.platform.mall.bean.SysActionAuthority;
 import com.platform.mall.bean.SysMenu;
 import com.platform.mall.bean.SysRole;
-import com.platform.mall.bean.SysUser;
 import com.platform.mall.component.PageList;
 import com.platform.mall.component.Result;
-import com.platform.mall.dto.UserMenu;
 import com.platform.mall.service.RoleService;
 import com.platform.mall.service.impl.MenuServiceImpl;
 import io.swagger.annotations.Api;
@@ -79,5 +77,13 @@ public class RoleController {
                               @RequestParam("menuIdList") List<Long> menuIdList){
 
         return Result.success(roleService.updateRoleMenu(roleId,menuIdList));
+    }
+
+    @ApiOperation("设置角色操作权限")
+    @RequestMapping(value = "/setRoleAuthority",method = RequestMethod.POST)
+    public Result setRoleAuthority(@RequestParam("roleId") long roleId,
+                              @RequestParam("authorityIdList") List<Long> authorityIdList){
+
+        return Result.success(roleService.updateRoleAuthority(roleId,authorityIdList));
     }
 }

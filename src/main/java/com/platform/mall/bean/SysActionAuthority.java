@@ -18,6 +18,8 @@ public class SysActionAuthority implements Serializable {
 
     private String description;
 
+    private Integer level;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -76,6 +78,14 @@ public class SysActionAuthority implements Serializable {
         this.description = description;
     }
 
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -89,6 +99,7 @@ public class SysActionAuthority implements Serializable {
         sb.append(", status=").append(status);
         sb.append(", createTime=").append(createTime);
         sb.append(", description=").append(description);
+        sb.append(", level=").append(level);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

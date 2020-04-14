@@ -28,15 +28,15 @@ public class AuthFilter implements Filter {
             String token = request.getHeader("Authorization");
             if(redisService.hasKey(token)){
                 //身份验证通过，开始权限验证
-//                UserCache userCache = (UserCache)redisService.get(token);
-//                request.setAttribute("userName",userCache.getUserName());
-//                String url = request.getRequestURI();
-//                if(!url.equals("/user/login")){
-//                    if(!userCache.getAuthorities().contains(url)){
-//                        response.getWriter().write(Result.failed("没有权限!").toString());
-//                        return;
-//                    }
-//                }
+                UserCache userCache = (UserCache)redisService.get(token);
+                request.setAttribute("userName",userCache.getUserName());
+                String url = request.getRequestURI();
+                if(!url.equals("/user/login")){
+                    if(!userCache.getAuthorities().contains(url)){
+                        response.getWriter().write(Result.failed("没有权限!").toString());
+                        return;
+                    }
+                }
                filterChain.doFilter(servletRequest,servletResponse);
             }
             else{

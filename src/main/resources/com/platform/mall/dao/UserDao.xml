@@ -56,9 +56,8 @@
         a.parent_id parentId,
         a.name name,
         a.create_time createTime,
-        a.icon icon,
-        a.description description,
-        a.front_key frontKey
+        a.value value,
+        a.description description
         from sys_action_authority a inner join sys_role_authority b on a.id = b.authority_id
         where b.role_id = #{roleId} and a.status = 1
     </select>

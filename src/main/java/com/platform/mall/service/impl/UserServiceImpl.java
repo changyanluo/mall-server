@@ -10,7 +10,6 @@ import com.platform.mall.mapper.SysUserRoleMapper;
 import com.platform.mall.service.RedisService;
 import com.platform.mall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.util.DigestUtils;
@@ -30,9 +29,6 @@ public class UserServiceImpl implements UserService{
     private SysUserRoleMapper sysUserRoleMapper;
     @Autowired
     private RedisService redisService;
-    @Value("${session.timeout}")
-    private Long timeout;
-
 
     @Override
     public List<String> login(String userName, String password) {
@@ -56,7 +52,13 @@ public class UserServiceImpl implements UserService{
             userCache.setUserName(userName);
             userCache.setAuthorities(authValueList);
             String sessionId = RequestContextHolder.getRequestAttributes().getSessionId();
-            redisService.set(sessionId,userCache.toString(),timeout);
+            //实现单点登录，查看redis中是否有该用户的信息,
+            if(redisService.hasKey(userName)){
+                String token = redisService.get(userName).toString();
+                redisService.del(token);
+            }
+            redisService.set(sessionId,userCache);
+            redisService.set(userName,sessionId);
             return authNameList;
         }
         else

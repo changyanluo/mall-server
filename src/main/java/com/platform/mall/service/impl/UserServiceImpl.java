@@ -9,17 +9,23 @@ import com.platform.mall.mapper.SysUserMapper;
 import com.platform.mall.mapper.SysUserRoleMapper;
 import com.platform.mall.service.RedisService;
 import com.platform.mall.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.context.request.RequestContextHolder;
+import sun.rmi.runtime.Log;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
 
     @Autowired
     private SysUserMapper sysUserMapper;

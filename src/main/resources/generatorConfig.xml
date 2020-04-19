@@ -28,14 +28,14 @@
 
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.platform.mall.bean" targetProject="E:\software\projects\github\mall-server\src\main\java"/>
+        <javaModelGenerator targetPackage="com.platform.mall.bean" targetProject="/Users/admin/mall/mall-server/src/main/java"/>
 
-        <sqlMapGenerator targetPackage="com.platform.mall.mapper" targetProject="E:\software\projects\github\mall-server\src\main\resources"/>
+        <sqlMapGenerator targetPackage="com.platform.mall.mapper" targetProject="/Users/admin/mall/mall-server/src/main/resources"/>
 
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.platform.mall.mapper"
-                             targetProject="E:\software\projects\github\mall-server\src\main\java"/>
+                             targetProject="/Users/admin/mall/mall-server/src/main/java"/>
         <!--生成全部表tableName设为%-->
-        <table tableName="sys_%">
+        <table tableName="mall_%">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

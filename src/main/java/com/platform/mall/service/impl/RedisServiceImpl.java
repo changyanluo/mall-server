@@ -3,11 +3,10 @@ package com.platform.mall.service.impl;
 import com.platform.mall.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -195,5 +194,20 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public Long lRemove(String key, long count, Object value) {
         return redisTemplate.opsForList().remove(key, count, value);
+    }
+
+    @Override
+    public Boolean getDistributedLock(String key) {
+        //用redis计数器实现限流
+        String lua = "local cnt = tonumber(redis.call(\"incr\", KEYS[1]))\n" +
+                "if (cnt == 1) then\n" +
+                "    redis.call(\"expire\", KEYS[1], 1)\n" +
+                "elseif (cnt > 3) then\n" +
+                "    return -1\n" +
+                "end \n" +
+                "return cnt";
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(lua,Long.class);
+        Long result = redisTemplate.execute(redisScript, Collections.singletonList(key));
+        return result > -1;
     }
 }

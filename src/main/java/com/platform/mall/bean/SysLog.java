@@ -16,8 +16,6 @@ public class SysLog implements Serializable {
 
     private String messageReturned;
 
-    private Integer type;
-
     private Date createTime;
 
     private Integer timespan;
@@ -72,14 +70,6 @@ public class SysLog implements Serializable {
         this.messageReturned = messageReturned;
     }
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -108,7 +98,6 @@ public class SysLog implements Serializable {
         sb.append(", actionUrl=").append(actionUrl);
         sb.append(", messageIncoming=").append(messageIncoming);
         sb.append(", messageReturned=").append(messageReturned);
-        sb.append(", type=").append(type);
         sb.append(", createTime=").append(createTime);
         sb.append(", timespan=").append(timespan);
         sb.append(", serialVersionUID=").append(serialVersionUID);

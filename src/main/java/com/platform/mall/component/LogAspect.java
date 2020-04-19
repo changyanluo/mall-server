@@ -1,4 +1,5 @@
 package com.platform.mall.component;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.platform.mall.bean.SysLog;
 import com.platform.mall.mapper.SysLogMapper;
 import io.swagger.annotations.ApiOperation;
@@ -47,7 +48,8 @@ public class LogAspect {
             ApiOperation log = method.getAnnotation(ApiOperation.class);
             sysLog.setActionName(log.value());
         }
-        sysLog.setMessageIncoming(getParameter(request.getParameterMap()));
+        ObjectMapper objectMapper = new ObjectMapper();
+        sysLog.setMessageIncoming(objectMapper.writeValueAsString(request.getParameterMap()));
         sysLog.setActionUrl(request.getRequestURI());
         Object userName = request.getAttribute("userName");
         if(userName != null){
@@ -59,7 +61,6 @@ public class LogAspect {
             return result;
         }
         catch (Exception ex){
-            sysLog.setType(2);
             sysLog.setMessageReturned(ex.toString());
             response.getWriter().write(Result.failed(ex.toString()).toString());
             return null;
@@ -68,25 +69,8 @@ public class LogAspect {
             Long timespan = System.currentTimeMillis() - startTime;
             sysLog.setTimespan(timespan.intValue());
             sysLog.setCreateTime(new Date());
+            sysLogMapper.insert(sysLog);
         }
     }
 
-    /**
-     * 根据方法和传入的参数获取请求参数
-     */
-    private String getParameter(Map<String,String[]> map) {
-       StringBuilder sb = new StringBuilder();
-       sb.append("{");
-       for(Map.Entry<String,String[]> entry:map.entrySet()){
-           sb.append(entry.getKey());
-           sb.append(":[");
-           for(String s:entry.getValue()){
-               sb.append(s);
-               sb.append(",");
-           }
-           sb.append("],");
-        }
-        sb.append("}");
-       return sb.toString();
-    }
 }

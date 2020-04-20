@@ -1,7 +1,8 @@
 package com.platform.mall.controller;
 
-
+import com.platform.mall.bean.MallFlashSale;
 import com.platform.mall.bean.MallGoods;
+import com.platform.mall.bean.MallOrder;
 import com.platform.mall.component.PageList;
 import com.platform.mall.component.Result;
 import com.platform.mall.service.SaleService;
@@ -9,8 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 @Api(tags = "SaleController",description = "商城服务接口")
 @RestController
@@ -26,6 +25,14 @@ public class SaleController {
                                                     @RequestParam("pageIndex") int pageIndex,
                                                     @RequestParam("pageSize") int pageSize) {
         return Result.success(saleService.getGoodsList(goodsName,pageIndex,pageSize));
+    }
+
+    @ApiOperation("分页获取订单列表")
+    @RequestMapping(value = "/getOrderList", method = RequestMethod.POST)
+    public Result<PageList<MallOrder>> getOrderList(@RequestParam(value = "goodsName",required = false) String goodsName,
+                                                    @RequestParam("pageIndex") int pageIndex,
+                                                    @RequestParam("pageSize") int pageSize) {
+        return Result.success(saleService.getOrderList(goodsName,pageIndex,pageSize));
     }
 
     @ApiOperation("添加商品")
@@ -44,5 +51,11 @@ public class SaleController {
     @RequestMapping(value = "/deleteGoods", method = RequestMethod.POST)
     public Result deleteGoods(@RequestBody long goodsId) {
         return Result.success(saleService.deleteGoods(goodsId));
+    }
+
+    @ApiOperation("添加秒杀商品")
+    @RequestMapping(value = "/addFlashGoods", method = RequestMethod.POST)
+    public Result addFlashGoods(@RequestBody MallFlashSale mallFlashSale) {
+        return Result.success(saleService.addFlashGoods(mallFlashSale));
     }
 }

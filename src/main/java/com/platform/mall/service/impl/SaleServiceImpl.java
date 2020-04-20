@@ -1,10 +1,8 @@
 package com.platform.mall.service.impl;
 
-import com.platform.mall.bean.MallGoods;
-import com.platform.mall.bean.MallGoodsExample;
-import com.platform.mall.bean.MallOrder;
-import com.platform.mall.bean.MallOrderExample;
+import com.platform.mall.bean.*;
 import com.platform.mall.component.PageList;
+import com.platform.mall.dao.UserDao;
 import com.platform.mall.mapper.MallFlashSaleMapper;
 import com.platform.mall.mapper.MallGoodsMapper;
 import com.platform.mall.mapper.MallOrderMapper;
@@ -24,6 +22,8 @@ public class SaleServiceImpl implements SaleService{
     private MallOrderMapper mallOrderMapper;
     @Autowired
     private MallFlashSaleMapper mallFlashSaleMapper;
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public PageList<MallGoods> getGoodsList(String goodsName, int pageIndex, int pageSize) {
@@ -58,5 +58,13 @@ public class SaleServiceImpl implements SaleService{
     @Override
     public int deleteGoods(long goodsId) {
         return mallGoodsMapper.deleteByPrimaryKey(goodsId);
+    }
+
+    @Override
+    public int addFlashGoods(MallFlashSale mallFlashSale) {
+        mallFlashSaleMapper.insert(mallFlashSale);
+        //更新商品状态为'秒杀中'
+        userDao.updateGoodsStateById(mallFlashSale.getGoodsId(),1);
+        return 1;
     }
 }

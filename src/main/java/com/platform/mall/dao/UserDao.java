@@ -25,4 +25,6 @@ public interface UserDao {
     int batchInsertRoleMenuRelation(@Param("roleId") long roleId,@Param("list")List<Long> menuIds);
 
     int batchInsertRoleAuthorityRelation(@Param("roleId") long roleId,@Param("list")List<Long> authorityIds);
+
+    int updateGoodsStateById(@Param("goodsId")long goodsId,@Param("state")int state);
 }

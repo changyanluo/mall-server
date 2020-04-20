@@ -1,8 +1,10 @@
 package com.platform.mall.service;
 
+import com.platform.mall.bean.MallFlashSale;
 import com.platform.mall.bean.MallGoods;
 import com.platform.mall.bean.MallOrder;
 import com.platform.mall.component.PageList;
+import org.springframework.transaction.annotation.Transactional;
 
 //商城服务接口
 public interface SaleService {
@@ -22,4 +24,7 @@ public interface SaleService {
     //删除商品
     int deleteGoods(long goodsId);
 
+    //添加秒杀商品
+    @Transactional
+    int addFlashGoods(MallFlashSale mallFlashSale);
 }

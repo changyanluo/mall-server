@@ -82,4 +82,8 @@
             #{item,jdbcType=BIGINT})
         </foreach>
     </insert>
+    <update id="updateGoodsStateById">
+        UPDATE mall_goods set state = #{state}
+        where id = #{goodsId}
+    </update>
 </mapper>

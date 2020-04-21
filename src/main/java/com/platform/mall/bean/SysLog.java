@@ -14,11 +14,15 @@ public class SysLog implements Serializable {
 
     private String messageIncoming;
 
-    private String messageReturned;
-
     private Date createTime;
 
     private Integer timespan;
+
+    private String ip;
+
+    private String messageReturned;
+
+    private String stack;
 
     private static final long serialVersionUID = 1L;
 
@@ -62,14 +66,6 @@ public class SysLog implements Serializable {
         this.messageIncoming = messageIncoming;
     }
 
-    public String getMessageReturned() {
-        return messageReturned;
-    }
-
-    public void setMessageReturned(String messageReturned) {
-        this.messageReturned = messageReturned;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -86,6 +82,30 @@ public class SysLog implements Serializable {
         this.timespan = timespan;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getMessageReturned() {
+        return messageReturned;
+    }
+
+    public void setMessageReturned(String messageReturned) {
+        this.messageReturned = messageReturned;
+    }
+
+    public String getStack() {
+        return stack;
+    }
+
+    public void setStack(String stack) {
+        this.stack = stack;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -97,9 +117,11 @@ public class SysLog implements Serializable {
         sb.append(", actionName=").append(actionName);
         sb.append(", actionUrl=").append(actionUrl);
         sb.append(", messageIncoming=").append(messageIncoming);
-        sb.append(", messageReturned=").append(messageReturned);
         sb.append(", createTime=").append(createTime);
         sb.append(", timespan=").append(timespan);
+        sb.append(", ip=").append(ip);
+        sb.append(", messageReturned=").append(messageReturned);
+        sb.append(", stack=").append(stack);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

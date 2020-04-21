@@ -445,76 +445,6 @@ public class SysLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andMessageReturnedIsNull() {
-            addCriterion("message_returned is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedIsNotNull() {
-            addCriterion("message_returned is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedEqualTo(String value) {
-            addCriterion("message_returned =", value, "messageReturned");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedNotEqualTo(String value) {
-            addCriterion("message_returned <>", value, "messageReturned");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedGreaterThan(String value) {
-            addCriterion("message_returned >", value, "messageReturned");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedGreaterThanOrEqualTo(String value) {
-            addCriterion("message_returned >=", value, "messageReturned");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedLessThan(String value) {
-            addCriterion("message_returned <", value, "messageReturned");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedLessThanOrEqualTo(String value) {
-            addCriterion("message_returned <=", value, "messageReturned");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedLike(String value) {
-            addCriterion("message_returned like", value, "messageReturned");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedNotLike(String value) {
-            addCriterion("message_returned not like", value, "messageReturned");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedIn(List<String> values) {
-            addCriterion("message_returned in", values, "messageReturned");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedNotIn(List<String> values) {
-            addCriterion("message_returned not in", values, "messageReturned");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedBetween(String value1, String value2) {
-            addCriterion("message_returned between", value1, value2, "messageReturned");
-            return (Criteria) this;
-        }
-
-        public Criteria andMessageReturnedNotBetween(String value1, String value2) {
-            addCriterion("message_returned not between", value1, value2, "messageReturned");
-            return (Criteria) this;
-        }
-
         public Criteria andCreateTimeIsNull() {
             addCriterion("create_time is null");
             return (Criteria) this;
@@ -632,6 +562,76 @@ public class SysLogExample {
 
         public Criteria andTimespanNotBetween(Integer value1, Integer value2) {
             addCriterion("timespan not between", value1, value2, "timespan");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpIsNull() {
+            addCriterion("IP is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpIsNotNull() {
+            addCriterion("IP is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpEqualTo(String value) {
+            addCriterion("IP =", value, "ip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpNotEqualTo(String value) {
+            addCriterion("IP <>", value, "ip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpGreaterThan(String value) {
+            addCriterion("IP >", value, "ip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpGreaterThanOrEqualTo(String value) {
+            addCriterion("IP >=", value, "ip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpLessThan(String value) {
+            addCriterion("IP <", value, "ip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpLessThanOrEqualTo(String value) {
+            addCriterion("IP <=", value, "ip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpLike(String value) {
+            addCriterion("IP like", value, "ip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpNotLike(String value) {
+            addCriterion("IP not like", value, "ip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpIn(List<String> values) {
+            addCriterion("IP in", values, "ip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpNotIn(List<String> values) {
+            addCriterion("IP not in", values, "ip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpBetween(String value1, String value2) {
+            addCriterion("IP between", value1, value2, "ip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIpNotBetween(String value1, String value2) {
+            addCriterion("IP not between", value1, value2, "ip");
             return (Criteria) this;
         }
     }

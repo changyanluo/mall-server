@@ -19,6 +19,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.text.MessageFormat;
 import java.util.*;
 
 
@@ -26,6 +29,10 @@ import java.util.*;
 @Aspect
 @Component
 public class LogAspect {
+
+    private static final String UNKNOWN = "unknown";
+    private static final String LOCALHOST = "127.0.0.1";
+    private static final String SEPARATOR = ",";
 
     @Autowired
     private SysLogMapper sysLogMapper;
@@ -41,6 +48,7 @@ public class LogAspect {
         HttpServletRequest request = attributes.getRequest();
         HttpServletResponse response = attributes.getResponse();
         SysLog sysLog = new SysLog();
+        sysLog.setIp(getIpAddr(request));
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         Method method = methodSignature.getMethod();
@@ -57,12 +65,18 @@ public class LogAspect {
         }
         try {
             Object result = joinPoint.proceed();
-            sysLog.setMessageReturned(result.toString());
+            sysLog.setMessageReturned(objectMapper.writeValueAsString(result));
             return result;
         }
         catch (Exception ex){
-            sysLog.setMessageReturned(ex.toString());
-            response.getWriter().write(Result.failed(ex.toString()).toString());
+            sysLog.setMessageReturned(ex.getMessage());
+            StringBuilder sbException = new StringBuilder();
+            for (StackTraceElement ele : ex.getStackTrace()) {
+                sbException.append(MessageFormat.format("\tat {0}.{1}({2}:{3})\n",
+                        ele.getClassName(), ele.getMethodName(), ele.getFileName(), ele.getLineNumber()));;
+            }
+            sysLog.setStack(sbException.toString());
+            response.getWriter().write(ex.getMessage());
             return null;
         }
         finally {
@@ -73,4 +87,39 @@ public class LogAspect {
         }
     }
 
+    public  String getIpAddr(HttpServletRequest request) {
+        System.out.println(request);
+        String ipAddress;
+        try {
+            ipAddress = request.getHeader("x-forwarded-for");
+            if (ipAddress == null || ipAddress.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddress)) {
+                ipAddress = request.getHeader("Proxy-Client-IP");
+            }
+            if (ipAddress == null || ipAddress.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddress)) {
+                ipAddress = request.getHeader("WL-Proxy-Client-IP");
+            }
+            if (ipAddress == null || ipAddress.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddress)) {
+                ipAddress = request.getRemoteAddr();
+                if (LOCALHOST.equals(ipAddress)) {
+                    InetAddress inet = null;
+                    try {
+                        inet = InetAddress.getLocalHost();
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    }
+                    ipAddress = inet.getHostAddress();
+                }
+            }
+            // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
+            // "***.***.***.***".length()
+            if (ipAddress != null && ipAddress.length() > 15) {
+                if (ipAddress.indexOf(SEPARATOR) > 0) {
+                    ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
+                }
+            }
+        } catch (Exception e) {
+            ipAddress = "";
+        }
+        return ipAddress;
+    }
 }

@@ -37,7 +37,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public PageList<SysRole> getList(String name, int pageIndex, int pageSize) {
-        PageHelper.startPage(pageIndex,pageSize);
+        PageHelper.startPage(pageIndex,pageSize,true);
         return PageList.getPageList(getList(name));
     }
 

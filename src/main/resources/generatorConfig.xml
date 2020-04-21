@@ -22,20 +22,20 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://106.15.33.116:3306/mall"
+                        connectionURL="jdbc:mysql://132.232.105.89:3306/mall"
                         userId="root"
-                        password="Jingxin..manji12">
+                        password="2+aHwqqLT0..">
 
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.platform.mall.bean" targetProject="/Users/admin/mall/mall-server/src/main/java"/>
+        <javaModelGenerator targetPackage="com.platform.mall.bean" targetProject="E:\software\projects\github\mall-server\src\main\java"/>
 
-        <sqlMapGenerator targetPackage="com.platform.mall.mapper" targetProject="/Users/admin/mall/mall-server/src/main/resources"/>
+        <sqlMapGenerator targetPackage="com.platform.mall.mapper" targetProject="E:\software\projects\github\mall-server\src\main\resources"/>
 
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.platform.mall.mapper"
-                             targetProject="/Users/admin/mall/mall-server/src/main/java"/>
+                             targetProject="E:\software\projects\github\mall-server\src\main\java"/>
         <!--生成全部表tableName设为%-->
-        <table tableName="mall_%">
+        <table tableName="sys_%">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

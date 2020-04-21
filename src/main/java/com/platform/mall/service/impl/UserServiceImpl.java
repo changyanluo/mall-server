@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public PageList<SysUser> getList(String name, int pageIndex, int pageSize) {
-        PageHelper.startPage(pageIndex,pageSize);
+        PageHelper.startPage(pageIndex,pageSize,true);
         SysUserExample example = new SysUserExample();
         if(!StringUtils.isEmpty(name)){
             example.createCriteria().andUserNameLike("%" + name + "%");

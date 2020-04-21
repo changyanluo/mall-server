@@ -1,11 +1,13 @@
 package com.platform.mall.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.platform.mall.bean.*;
 import com.platform.mall.component.PageList;
 import com.platform.mall.dao.UserDao;
 import com.platform.mall.mapper.MallFlashSaleMapper;
 import com.platform.mall.mapper.MallGoodsMapper;
 import com.platform.mall.mapper.MallOrderMapper;
+import com.platform.mall.service.RedisService;
 import com.platform.mall.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,19 +26,23 @@ public class SaleServiceImpl implements SaleService{
     private MallFlashSaleMapper mallFlashSaleMapper;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public PageList<MallGoods> getGoodsList(String goodsName, int pageIndex, int pageSize) {
+        PageHelper.startPage(pageIndex,pageSize,true);
         MallGoodsExample example = new MallGoodsExample();
         if(!StringUtils.isEmpty(goodsName)){
             example.createCriteria().andGoodsNameLike("%" + goodsName + "%");
         }
-        List<MallGoods> list = mallGoodsMapper.selectByExample(example);
+        List<MallGoods> list = mallGoodsMapper.selectByExampleWithBLOBs(example);
         return PageList.getPageList(list);
     }
 
     @Override
     public PageList<MallOrder> getOrderList(String goodsName, int pageIndex, int pageSize) {
+        PageHelper.startPage(pageIndex,pageSize,true);
         MallOrderExample example = new MallOrderExample();
         if(!StringUtils.isEmpty(goodsName)){
             example.createCriteria().andGoodsNameLike("%" + goodsName + "%");
@@ -52,7 +58,7 @@ public class SaleServiceImpl implements SaleService{
 
     @Override
     public int updateGoods(MallGoods goods) {
-        return mallGoodsMapper.updateByPrimaryKey(goods);
+        return mallGoodsMapper.updateByPrimaryKeyWithBLOBs(goods);
     }
 
     @Override
@@ -65,6 +71,9 @@ public class SaleServiceImpl implements SaleService{
         mallFlashSaleMapper.insert(mallFlashSale);
         //更新商品状态为'秒杀中'
         userDao.updateGoodsStateById(mallFlashSale.getGoodsId(),1);
+        //将秒杀商品的信息存入redis
+        String prefix = "flashGoods:" + mallFlashSale.getGoodsId();
+
         return 1;
     }
 }

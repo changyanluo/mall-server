@@ -7,9 +7,13 @@
     <result column="action_name" jdbcType="VARCHAR" property="actionName" />
     <result column="action_url" jdbcType="VARCHAR" property="actionUrl" />
     <result column="message_incoming" jdbcType="VARCHAR" property="messageIncoming" />
-    <result column="message_returned" jdbcType="VARCHAR" property="messageReturned" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="timespan" jdbcType="INTEGER" property="timespan" />
+    <result column="IP" jdbcType="VARCHAR" property="ip" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.platform.mall.bean.SysLog">
+    <result column="message_returned" jdbcType="LONGVARCHAR" property="messageReturned" />
+    <result column="stack" jdbcType="LONGVARCHAR" property="stack" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,9 +74,28 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_name, action_name, action_url, message_incoming, message_returned, create_time, 
-    timespan
+    id, user_name, action_name, action_url, message_incoming, create_time, timespan, 
+    IP
   </sql>
+  <sql id="Blob_Column_List">
+    message_returned, stack
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.platform.mall.bean.SysLogExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sys_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" parameterType="com.platform.mall.bean.SysLogExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -87,9 +110,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from sys_log
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -108,11 +133,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into sys_log (user_name, action_name, action_url, 
-      message_incoming, message_returned, create_time, 
-      timespan)
+      message_incoming, create_time, timespan, 
+      IP, message_returned, stack
+      )
     values (#{userName,jdbcType=VARCHAR}, #{actionName,jdbcType=VARCHAR}, #{actionUrl,jdbcType=VARCHAR}, 
-      #{messageIncoming,jdbcType=VARCHAR}, #{messageReturned,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{timespan,jdbcType=INTEGER})
+      #{messageIncoming,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{timespan,jdbcType=INTEGER}, 
+      #{ip,jdbcType=VARCHAR}, #{messageReturned,jdbcType=LONGVARCHAR}, #{stack,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.platform.mall.bean.SysLog">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -132,14 +159,20 @@
       <if test="messageIncoming != null">
         message_incoming,
       </if>
-      <if test="messageReturned != null">
-        message_returned,
-      </if>
       <if test="createTime != null">
         create_time,
       </if>
       <if test="timespan != null">
         timespan,
+      </if>
+      <if test="ip != null">
+        IP,
+      </if>
+      <if test="messageReturned != null">
+        message_returned,
+      </if>
+      <if test="stack != null">
+        stack,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -155,14 +188,20 @@
       <if test="messageIncoming != null">
         #{messageIncoming,jdbcType=VARCHAR},
       </if>
-      <if test="messageReturned != null">
-        #{messageReturned,jdbcType=VARCHAR},
-      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="timespan != null">
         #{timespan,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="messageReturned != null">
+        #{messageReturned,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="stack != null">
+        #{stack,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -190,16 +229,38 @@
       <if test="record.messageIncoming != null">
         message_incoming = #{record.messageIncoming,jdbcType=VARCHAR},
       </if>
-      <if test="record.messageReturned != null">
-        message_returned = #{record.messageReturned,jdbcType=VARCHAR},
-      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.timespan != null">
         timespan = #{record.timespan,jdbcType=INTEGER},
       </if>
+      <if test="record.ip != null">
+        IP = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.messageReturned != null">
+        message_returned = #{record.messageReturned,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.stack != null">
+        stack = #{record.stack,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update sys_log
+    set id = #{record.id,jdbcType=BIGINT},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      action_name = #{record.actionName,jdbcType=VARCHAR},
+      action_url = #{record.actionUrl,jdbcType=VARCHAR},
+      message_incoming = #{record.messageIncoming,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      timespan = #{record.timespan,jdbcType=INTEGER},
+      IP = #{record.ip,jdbcType=VARCHAR},
+      message_returned = #{record.messageReturned,jdbcType=LONGVARCHAR},
+      stack = #{record.stack,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -211,9 +272,9 @@
       action_name = #{record.actionName,jdbcType=VARCHAR},
       action_url = #{record.actionUrl,jdbcType=VARCHAR},
       message_incoming = #{record.messageIncoming,jdbcType=VARCHAR},
-      message_returned = #{record.messageReturned,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      timespan = #{record.timespan,jdbcType=INTEGER}
+      timespan = #{record.timespan,jdbcType=INTEGER},
+      IP = #{record.ip,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -233,16 +294,35 @@
       <if test="messageIncoming != null">
         message_incoming = #{messageIncoming,jdbcType=VARCHAR},
       </if>
-      <if test="messageReturned != null">
-        message_returned = #{messageReturned,jdbcType=VARCHAR},
-      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="timespan != null">
         timespan = #{timespan,jdbcType=INTEGER},
       </if>
+      <if test="ip != null">
+        IP = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="messageReturned != null">
+        message_returned = #{messageReturned,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="stack != null">
+        stack = #{stack,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.platform.mall.bean.SysLog">
+    update sys_log
+    set user_name = #{userName,jdbcType=VARCHAR},
+      action_name = #{actionName,jdbcType=VARCHAR},
+      action_url = #{actionUrl,jdbcType=VARCHAR},
+      message_incoming = #{messageIncoming,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      timespan = #{timespan,jdbcType=INTEGER},
+      IP = #{ip,jdbcType=VARCHAR},
+      message_returned = #{messageReturned,jdbcType=LONGVARCHAR},
+      stack = #{stack,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.platform.mall.bean.SysLog">
@@ -251,9 +331,9 @@
       action_name = #{actionName,jdbcType=VARCHAR},
       action_url = #{actionUrl,jdbcType=VARCHAR},
       message_incoming = #{messageIncoming,jdbcType=VARCHAR},
-      message_returned = #{messageReturned,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      timespan = #{timespan,jdbcType=INTEGER}
+      timespan = #{timespan,jdbcType=INTEGER},
+      IP = #{ip,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

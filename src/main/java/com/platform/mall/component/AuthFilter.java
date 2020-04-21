@@ -39,13 +39,13 @@ public class AuthFilter implements Filter {
                 UserCache userCache = (UserCache) redisService.get(token);
                 request.setAttribute("userName", userCache.getUserName());
                 if (!userCache.getAuthorities().contains(url)) {
-                    response.getWriter().write("没有权限!" + url);
+                    response.getWriter().write("No Authority for action " + url);
                     return;
                 }
                 filterChain.doFilter(servletRequest, servletResponse);
             } else {
                 //身份验证失败，返回会话过期
-                response.getWriter().write("会话过期!");
+                response.getWriter().write("session timeout!");
             }
         }
     }

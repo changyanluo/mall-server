@@ -30,10 +30,6 @@ public class Result<T> {
         return new Result<T>(ResultCode.FAILED.getCode(),message,null);
     }
 
-    public static  <T> Result<T> failed(T data){
-        return new Result<T>(ResultCode.FAILED.getCode(),ResultCode.FAILED.getMessage(),data);
-    }
-
     public static  <T> Result<T> failed(String message,T data){
         return new Result<T>(ResultCode.FAILED.getCode(),message,data);
     }

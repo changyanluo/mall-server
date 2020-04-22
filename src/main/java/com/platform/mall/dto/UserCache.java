@@ -4,8 +4,17 @@ import java.io.Serializable;
 import java.util.List;
 
 public class UserCache implements Serializable {
+    long userId;
     String userName;
     List<String> authorities;
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
     public String getUserName() {
         return userName;
@@ -21,22 +30,5 @@ public class UserCache implements Serializable {
 
     public void setAuthorities(List<String> authorities) {
         this.authorities = authorities;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{\"userName\":\"");
-        sb.append(userName);
-        sb.append("\",\"authorities\":[");
-        for(int i = 0;i < authorities.size();i++){
-            sb.append("\"");
-            sb.append(authorities.get(i));
-            sb.append("\"");
-            if(i != authorities.size() - 1)
-                sb.append(",");
-        }
-        sb.append("]}");
-        return sb.toString();
     }
 }

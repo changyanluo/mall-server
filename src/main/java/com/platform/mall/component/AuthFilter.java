@@ -38,6 +38,7 @@ public class AuthFilter implements Filter {
                 //身份验证通过，开始权限验证
                 UserCache userCache = (UserCache) redisService.get(token);
                 request.setAttribute("userName", userCache.getUserName());
+                request.setAttribute("userId",userCache.getUserId());
                 if (!userCache.getAuthorities().contains(url)) {
                     response.getWriter().write("No Authority for action " + url);
                     return;

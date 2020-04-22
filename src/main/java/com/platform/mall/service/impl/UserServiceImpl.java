@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserService{
             UserCache userCache = new UserCache();
             userCache.setUserName(userName);
             userCache.setAuthorities(authValueList);
+            userCache.setUserId(sysUsers.get(0).getId());
             String sessionId = RequestContextHolder.getRequestAttributes().getSessionId();
             //实现单点登录，查看redis中是否有该用户的信息,
             if(redisService.hasKey(userName)){

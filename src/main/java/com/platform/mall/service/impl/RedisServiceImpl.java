@@ -198,7 +198,7 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public Boolean getDistributedLock(String key) {
-        //用redis计数器实现限流
+        //用redis计数器实现限流,一秒钟最多访问2次
         String lua = "local cnt = tonumber(redis.call(\"incr\", KEYS[1]))\n" +
                 "if (cnt == 1) then\n" +
                 "    redis.call(\"expire\", KEYS[1], 1)\n" +

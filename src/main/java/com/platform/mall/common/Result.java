@@ -1,6 +1,4 @@
-package com.platform.mall.component;
-
-import java.io.Serializable;
+package com.platform.mall.common;
 
 //统一返回数据格式
 public class Result<T> {

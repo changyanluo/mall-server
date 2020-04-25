@@ -1,4 +1,4 @@
-package com.platform.mall.component;
+package com.platform.mall.common;
 
 import java.util.List;
 import com.github.pagehelper.PageInfo;

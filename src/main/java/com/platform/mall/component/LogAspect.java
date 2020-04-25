@@ -1,6 +1,7 @@
 package com.platform.mall.component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.platform.mall.bean.SysLog;
+import com.platform.mall.common.Util;
 import com.platform.mall.mapper.SysLogMapper;
 import io.swagger.annotations.ApiOperation;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -23,14 +25,14 @@ import java.text.MessageFormat;
 import java.util.*;
 
 
-//记录每个请求的日志
+//记录每个请求的日志,先发送到kafka,再转到es
 @Aspect
 @Component
 public class LogAspect {
 
 
     @Autowired
-    private SysLogMapper sysLogMapper;
+    private KafkaTemplate<String,String> kafkaTemplate;
 
     @Pointcut("execution(public * com.platform.mall.controller.*.*(..))")
     public void webLog() {
@@ -51,8 +53,7 @@ public class LogAspect {
             ApiOperation log = method.getAnnotation(ApiOperation.class);
             sysLog.setActionName(log.value());
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        sysLog.setMessageIncoming(objectMapper.writeValueAsString(request.getParameterMap()));
+        sysLog.setMessageIncoming(Util.toJsonString(request.getParameterMap()));
         sysLog.setActionUrl(request.getRequestURI());
         Object userName = request.getAttribute("userName");
         if(userName != null){
@@ -60,7 +61,7 @@ public class LogAspect {
         }
         try {
             Object result = joinPoint.proceed();
-            sysLog.setMessageReturned(objectMapper.writeValueAsString(result));
+            sysLog.setMessageReturned(Util.toJsonString(result));
             return result;
         }
         catch (Exception ex){
@@ -78,7 +79,7 @@ public class LogAspect {
             Long timespan = System.currentTimeMillis() - startTime;
             sysLog.setTimespan(timespan.intValue());
             sysLog.setCreateTime(new Date());
-            sysLogMapper.insert(sysLog);
+            kafkaTemplate.send("log",Util.toJsonString(sysLog));
         }
     }
 }

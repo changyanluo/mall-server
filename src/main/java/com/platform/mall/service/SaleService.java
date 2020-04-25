@@ -3,7 +3,7 @@ package com.platform.mall.service;
 import com.platform.mall.bean.MallFlashSale;
 import com.platform.mall.bean.MallGoods;
 import com.platform.mall.bean.MallOrder;
-import com.platform.mall.component.PageList;
+import com.platform.mall.common.PageList;
 import org.springframework.transaction.annotation.Transactional;
 
 //商城服务接口

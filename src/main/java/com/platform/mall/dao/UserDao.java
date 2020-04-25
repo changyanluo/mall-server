@@ -5,6 +5,7 @@ package com.platform.mall.dao;
 import com.platform.mall.bean.SysActionAuthority;
 import com.platform.mall.bean.SysMenu;
 import com.platform.mall.bean.SysRole;
+import com.platform.mall.dto.FlashOrder;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
@@ -19,6 +20,8 @@ public interface UserDao {
     List<SysActionAuthority> getAuthoritybyRoleId(@Param("roleId") long roleId);
 
     List<SysActionAuthority> getAuthoritybyUserId(@Param("userId") long userId);
+
+    List<FlashOrder> getFlashGoods(@Param("userId") long userId,@Param("goodsId") long goodsId);
 
     int batchInsertUserRoleRelation(@Param("userId") long userId,@Param("list") List<Long> roleIds);
 

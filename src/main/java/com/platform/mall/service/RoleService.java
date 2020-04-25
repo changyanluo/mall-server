@@ -3,8 +3,7 @@ package com.platform.mall.service;
 import com.platform.mall.bean.SysActionAuthority;
 import com.platform.mall.bean.SysMenu;
 import com.platform.mall.bean.SysRole;
-import com.platform.mall.component.PageList;
-import com.platform.mall.dto.UserMenu;
+import com.platform.mall.common.PageList;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

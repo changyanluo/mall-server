@@ -1,7 +1,7 @@
 package com.platform.mall.controller;
 
 import com.platform.mall.bean.SysMenu;
-import com.platform.mall.component.Result;
+import com.platform.mall.common.Result;
 import com.platform.mall.dto.UserMenu;
 import com.platform.mall.service.MenuService;
 import io.swagger.annotations.Api;

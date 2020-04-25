@@ -2,7 +2,7 @@ package com.platform.mall.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.platform.mall.bean.*;
-import com.platform.mall.component.PageList;
+import com.platform.mall.common.PageList;
 import com.platform.mall.dao.UserDao;
 import com.platform.mall.dto.UserCache;
 import com.platform.mall.mapper.SysUserMapper;

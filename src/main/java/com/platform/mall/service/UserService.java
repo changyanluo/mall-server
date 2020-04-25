@@ -3,7 +3,7 @@ package com.platform.mall.service;
 import com.platform.mall.bean.SysMenu;
 import com.platform.mall.bean.SysRole;
 import com.platform.mall.bean.SysUser;
-import com.platform.mall.component.PageList;
+import com.platform.mall.common.PageList;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.platform.mall.component;
+package com.platform.mall.common;
 
 //返回值编码
 public enum ResultCode {

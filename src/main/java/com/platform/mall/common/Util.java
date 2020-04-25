@@ -1,4 +1,7 @@
-package com.platform.mall.component;
+package com.platform.mall.common;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
@@ -11,6 +14,7 @@ public class Util {
     private static final String UNKNOWN = "unknown";
     private static final String LOCALHOST = "127.0.0.1";
     private static final String SEPARATOR = ",";
+    private static ObjectMapper mapper = new ObjectMapper();
 
     //获取请求方的IP地址
     public static  String getIpAddr(HttpServletRequest request) {
@@ -47,5 +51,18 @@ public class Util {
             ipAddress = "";
         }
         return ipAddress;
+    }
+
+    public static String toJsonString(Object o) throws Exception{
+        return mapper.writeValueAsString(o);
+    }
+
+    public static <T> T parseValue(String jsonString,Class<T> c){
+        try {
+            return mapper.readValue(jsonString,c);
+        }
+        catch (JsonProcessingException ex) {
+            return null;
+        }
     }
 }

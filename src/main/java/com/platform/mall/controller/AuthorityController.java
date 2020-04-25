@@ -1,7 +1,7 @@
 package com.platform.mall.controller;
 
 import com.platform.mall.bean.SysActionAuthority;
-import com.platform.mall.component.Result;
+import com.platform.mall.common.Result;
 import com.platform.mall.dto.UserAuthority;
 import com.platform.mall.service.AuthorityService;
 import io.swagger.annotations.Api;

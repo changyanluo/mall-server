@@ -1,13 +1,12 @@
 package com.platform.mall.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.platform.mall.bean.MallFlashSale;
 import com.platform.mall.bean.MallGoods;
 import com.platform.mall.bean.MallOrder;
 import com.platform.mall.common.PageList;
 import com.platform.mall.common.Result;
 import com.platform.mall.common.Util;
-import com.platform.mall.dao.UserDao;
+import com.platform.mall.dao.SaleDao;
 import com.platform.mall.dto.FlashMessage;
 import com.platform.mall.service.RedisService;
 import com.platform.mall.service.SaleService;
@@ -34,7 +33,7 @@ public class SaleController {
     @Autowired
     private RedisService redisService;
     @Autowired
-    private UserDao userDao;
+    private SaleDao saleDao;
     @Autowired
     private KafkaTemplate<String,String> kafkaTemplate;
     //标记商品是否售完的标记
@@ -46,8 +45,8 @@ public class SaleController {
                         @RequestParam("flashId") long flashId,
                         HttpServletRequest request) throws Exception{
         //获取分布式锁，每个用户每秒钟最多访问2次
-        Long userId = (Long)request.getAttribute("userId");
-        if(!redisService.getDistributedLock(Util.FLASH_USER_PREFIX + userId)){
+        String userName = (String)request.getAttribute("userName");
+        if(!redisService.getDistributedLock(Util.FLASH_USER_PREFIX + userName)){
             return Result.failed("三秒防刷!");
         }
         //先根据内存中的标记判断该商品是否被强光，减少resdis访问
@@ -59,13 +58,14 @@ public class SaleController {
         Long stock = redisService.hDecr(goodsKey,"stock", 1L);
         if(stock < 0){
             localOver.put(goodsId,true);
-            userDao.updateGoodsStateById(goodsId,0);
+            saleDao.updateGoodsStateById(goodsId,0);
             return Result.failed("已被抢光!");
         }
         //redis减库存后发消息到kafka异步生成订单
         FlashMessage message = new FlashMessage();
         message.setFlashId(flashId);
         message.setGoodsId(goodsId);
+        message.setUserName(userName);
         String serizeMsg = Util.toJsonString(message);
         logger.info("发送秒杀消息" + serizeMsg);
         kafkaTemplate.send("flashSale",serizeMsg);

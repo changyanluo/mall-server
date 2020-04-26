@@ -1,8 +1,6 @@
 package com.platform.mall.component;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.platform.mall.bean.SysLog;
 import com.platform.mall.common.Util;
-import com.platform.mall.mapper.SysLogMapper;
 import io.swagger.annotations.ApiOperation;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -12,6 +10,8 @@ import org.aspectj.lang.annotation.Aspect;
 //统一日志处理切面
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -30,7 +30,7 @@ import java.util.*;
 @Component
 public class LogAspect {
 
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private KafkaTemplate<String,String> kafkaTemplate;
 
@@ -79,7 +79,12 @@ public class LogAspect {
             Long timespan = System.currentTimeMillis() - startTime;
             sysLog.setTimespan(timespan.intValue());
             sysLog.setCreateTime(new Date());
-            kafkaTemplate.send("log",Util.toJsonString(sysLog));
+            try{
+                kafkaTemplate.send("log",Util.toJsonString(sysLog));
+            }
+            catch (Exception ex){
+                logger.error("发送操作日志到kafka失败:"+ ex.getMessage());
+            }
         }
     }
 }

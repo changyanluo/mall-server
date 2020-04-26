@@ -18,6 +18,8 @@ public class MallGoods implements Serializable {
 
     private Integer state;
 
+    private String producer;
+
     private String description;
 
     private static final long serialVersionUID = 1L;
@@ -78,6 +80,14 @@ public class MallGoods implements Serializable {
         this.state = state;
     }
 
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -99,6 +109,7 @@ public class MallGoods implements Serializable {
         sb.append(", price=").append(price);
         sb.append(", stock=").append(stock);
         sb.append(", state=").append(state);
+        sb.append(", producer=").append(producer);
         sb.append(", description=").append(description);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

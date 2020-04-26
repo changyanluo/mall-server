@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.platform.mall.bean.*;
 import com.platform.mall.common.PageList;
 import com.platform.mall.common.Util;
+import com.platform.mall.dao.SaleDao;
 import com.platform.mall.dao.UserDao;
 import com.platform.mall.mapper.MallFlashSaleMapper;
 import com.platform.mall.mapper.MallGoodsMapper;
@@ -28,7 +29,7 @@ public class SaleServiceImpl implements SaleService{
     @Autowired
     private MallFlashSaleMapper mallFlashSaleMapper;
     @Autowired
-    private UserDao userDao;
+    private SaleDao saleDao;
     @Autowired
     private RedisService redisService;
 
@@ -73,7 +74,7 @@ public class SaleServiceImpl implements SaleService{
     public int addFlashGoods(MallFlashSale mallFlashSale) {
         mallFlashSaleMapper.insert(mallFlashSale);
         //更新商品状态为'秒杀中'
-        userDao.updateGoodsStateById(mallFlashSale.getGoodsId(),1);
+        saleDao.updateGoodsStateById(mallFlashSale.getGoodsId(),1);
         /*将秒杀商品的信息存入redis,是以flashGoods{商品编号}为key的hash,
         hash中存储秒杀数量，秒杀价格
         */

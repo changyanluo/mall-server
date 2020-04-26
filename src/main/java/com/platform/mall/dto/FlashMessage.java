@@ -1,8 +1,17 @@
 package com.platform.mall.dto;
 
 public class FlashMessage {
+    private String userName;
     private long flashId;
     private long goodsId;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public long getFlashId() {
         return flashId;

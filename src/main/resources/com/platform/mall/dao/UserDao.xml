@@ -51,6 +51,16 @@
         from sys_menu a inner join sys_role_menu b on a.id = b.menu_id
         where b.role_id = #{roleId} and a.status = 1
     </select>
+    <select id="getFlashGoods" resultType="com.platform.mall.dto.FlashOrder"
+            parameterType="com.platform.mall.dto.FlashMessage">
+        select b.goods_name,a.flash_price
+        from mall_flash_sale a
+        inner join
+        mall_goods b
+        on a.goods_id = b.id
+        where a.id = #{flashMessage.flashId}
+        and a.goods_id = #{flashMessage.goodsId}
+    </select>
     <select id="getAuthoritybyRoleId" resultType="com.platform.mall.bean.SysActionAuthority">
         select a.id id,
         a.parent_id parentId,

@@ -3,15 +3,15 @@
 <mapper namespace="com.platform.mall.mapper.MallOrderMapper">
   <resultMap id="BaseResultMap" type="com.platform.mall.bean.MallOrder">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
     <result column="delivery_addr_id" jdbcType="BIGINT" property="deliveryAddrId" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="goods_count" jdbcType="INTEGER" property="goodsCount" />
     <result column="goods_price" jdbcType="DECIMAL" property="goodsPrice" />
-    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="pay_date" jdbcType="TIMESTAMP" property="payDate" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, goods_id, delivery_addr_id, goods_name, goods_count, goods_price, status, 
-    create_date, pay_date
+    id, goods_id, delivery_addr_id, goods_name, goods_count, goods_price, status, create_date, 
+    pay_date, user_name
   </sql>
   <select id="selectByExample" parameterType="com.platform.mall.bean.MallOrderExample" resultMap="BaseResultMap">
     select
@@ -109,13 +109,13 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into mall_order (user_id, goods_id, delivery_addr_id, 
-      goods_name, goods_count, goods_price, 
-      status, create_date, pay_date
+    insert into mall_order (goods_id, delivery_addr_id, goods_name, 
+      goods_count, goods_price, status, 
+      create_date, pay_date, user_name
       )
-    values (#{userId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{deliveryAddrId,jdbcType=BIGINT}, 
-      #{goodsName,jdbcType=VARCHAR}, #{goodsCount,jdbcType=INTEGER}, #{goodsPrice,jdbcType=DECIMAL}, 
-      #{status,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, #{payDate,jdbcType=TIMESTAMP}
+    values (#{goodsId,jdbcType=BIGINT}, #{deliveryAddrId,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR}, 
+      #{goodsCount,jdbcType=INTEGER}, #{goodsPrice,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{payDate,jdbcType=TIMESTAMP}, #{userName,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.platform.mall.bean.MallOrder">
@@ -124,9 +124,6 @@
     </selectKey>
     insert into mall_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        user_id,
-      </if>
       <if test="goodsId != null">
         goods_id,
       </if>
@@ -151,11 +148,11 @@
       <if test="payDate != null">
         pay_date,
       </if>
+      <if test="userName != null">
+        user_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
-      </if>
       <if test="goodsId != null">
         #{goodsId,jdbcType=BIGINT},
       </if>
@@ -172,13 +169,16 @@
         #{goodsPrice,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
-        #{status,jdbcType=TINYINT},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
       </if>
       <if test="payDate != null">
         #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -193,9 +193,6 @@
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
-      </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=BIGINT},
       </if>
       <if test="record.goodsId != null">
         goods_id = #{record.goodsId,jdbcType=BIGINT},
@@ -213,13 +210,16 @@
         goods_price = #{record.goodsPrice,jdbcType=DECIMAL},
       </if>
       <if test="record.status != null">
-        status = #{record.status,jdbcType=TINYINT},
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.createDate != null">
         create_date = #{record.createDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.payDate != null">
         pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -229,15 +229,15 @@
   <update id="updateByExample" parameterType="map">
     update mall_order
     set id = #{record.id,jdbcType=BIGINT},
-      user_id = #{record.userId,jdbcType=BIGINT},
       goods_id = #{record.goodsId,jdbcType=BIGINT},
       delivery_addr_id = #{record.deliveryAddrId,jdbcType=BIGINT},
       goods_name = #{record.goodsName,jdbcType=VARCHAR},
       goods_count = #{record.goodsCount,jdbcType=INTEGER},
       goods_price = #{record.goodsPrice,jdbcType=DECIMAL},
-      status = #{record.status,jdbcType=TINYINT},
+      status = #{record.status,jdbcType=INTEGER},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
-      pay_date = #{record.payDate,jdbcType=TIMESTAMP}
+      pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      user_name = #{record.userName,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -245,9 +245,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.platform.mall.bean.MallOrder">
     update mall_order
     <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
-      </if>
       <if test="goodsId != null">
         goods_id = #{goodsId,jdbcType=BIGINT},
       </if>
@@ -264,7 +261,7 @@
         goods_price = #{goodsPrice,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=TINYINT},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="createDate != null">
         create_date = #{createDate,jdbcType=TIMESTAMP},
@@ -272,20 +269,23 @@
       <if test="payDate != null">
         pay_date = #{payDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.platform.mall.bean.MallOrder">
     update mall_order
-    set user_id = #{userId,jdbcType=BIGINT},
-      goods_id = #{goodsId,jdbcType=BIGINT},
+    set goods_id = #{goodsId,jdbcType=BIGINT},
       delivery_addr_id = #{deliveryAddrId,jdbcType=BIGINT},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       goods_count = #{goodsCount,jdbcType=INTEGER},
       goods_price = #{goodsPrice,jdbcType=DECIMAL},
-      status = #{status,jdbcType=TINYINT},
+      status = #{status,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP},
-      pay_date = #{payDate,jdbcType=TIMESTAMP}
+      pay_date = #{payDate,jdbcType=TIMESTAMP},
+      user_name = #{userName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

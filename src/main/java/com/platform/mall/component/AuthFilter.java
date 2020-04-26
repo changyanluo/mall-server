@@ -1,5 +1,6 @@
 package com.platform.mall.component;
 
+import com.platform.mall.common.Util;
 import com.platform.mall.dto.UserCache;
 import com.platform.mall.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,9 @@ public class AuthFilter implements Filter {
         else{
             //身份验证
             String token = request.getHeader("Authorization");
-            if (token != null && redisService.hasKey(token)) {
+            if (token != null && redisService.hasKey(Util.ONLINE_USER_PREFIX + token)) {
                 //身份验证通过，开始权限验证
-                UserCache userCache = (UserCache) redisService.get(token);
+                UserCache userCache = (UserCache) redisService.get(Util.ONLINE_USER_PREFIX + token);
                 request.setAttribute("userName", userCache.getUserName());
                 request.setAttribute("userId",userCache.getUserId());
                 if (!userCache.getAuthorities().contains(url)) {

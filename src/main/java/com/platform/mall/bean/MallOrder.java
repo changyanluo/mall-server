@@ -7,8 +7,6 @@ import java.util.Date;
 public class MallOrder implements Serializable {
     private Long id;
 
-    private Long userId;
-
     private Long goodsId;
 
     private Long deliveryAddrId;
@@ -19,11 +17,13 @@ public class MallOrder implements Serializable {
 
     private BigDecimal goodsPrice;
 
-    private Byte status;
+    private Integer status;
 
     private Date createDate;
 
     private Date payDate;
+
+    private String userName;
 
     private static final long serialVersionUID = 1L;
 
@@ -33,14 +33,6 @@ public class MallOrder implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getGoodsId() {
@@ -83,11 +75,11 @@ public class MallOrder implements Serializable {
         this.goodsPrice = goodsPrice;
     }
 
-    public Byte getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -107,6 +99,14 @@ public class MallOrder implements Serializable {
         this.payDate = payDate;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -114,7 +114,6 @@ public class MallOrder implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", userId=").append(userId);
         sb.append(", goodsId=").append(goodsId);
         sb.append(", deliveryAddrId=").append(deliveryAddrId);
         sb.append(", goodsName=").append(goodsName);
@@ -123,6 +122,7 @@ public class MallOrder implements Serializable {
         sb.append(", status=").append(status);
         sb.append(", createDate=").append(createDate);
         sb.append(", payDate=").append(payDate);
+        sb.append(", userName=").append(userName);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -3,6 +3,7 @@ package com.platform.mall.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.platform.mall.bean.*;
 import com.platform.mall.common.PageList;
+import com.platform.mall.common.Util;
 import com.platform.mall.dao.UserDao;
 import com.platform.mall.dto.UserCache;
 import com.platform.mall.mapper.SysUserMapper;
@@ -58,13 +59,14 @@ public class UserServiceImpl implements UserService{
             userCache.setAuthorities(authValueList);
             userCache.setUserId(sysUsers.get(0).getId());
             String sessionId = RequestContextHolder.getRequestAttributes().getSessionId();
-            //实现单点登录，查看redis中是否有该用户的信息,
+            String redisKey = Util.ONLINE_USER_PREFIX + sessionId;
+            //一个账号只允许有一个session,查看redis中是否有该用户的信息,
             if(redisService.hasKey(userName)){
                 String token = redisService.get(userName).toString();
                 redisService.del(token);
             }
-            redisService.set(sessionId,userCache);
-            redisService.set(userName,sessionId);
+            redisService.set(redisKey,userCache);
+            redisService.set(userName,redisKey);
             return authNameList;
         }
         else

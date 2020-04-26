@@ -5,9 +5,11 @@ import java.io.Serializable;
 public class SysMessageUser implements Serializable {
     private Long id;
 
-    private Long userid;
-
     private Long messageId;
+
+    private Integer status;
+
+    private String userName;
 
     private static final long serialVersionUID = 1L;
 
@@ -19,20 +21,28 @@ public class SysMessageUser implements Serializable {
         this.id = id;
     }
 
-    public Long getUserid() {
-        return userid;
-    }
-
-    public void setUserid(Long userid) {
-        this.userid = userid;
-    }
-
     public Long getMessageId() {
         return messageId;
     }
 
     public void setMessageId(Long messageId) {
         this.messageId = messageId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override
@@ -42,8 +52,9 @@ public class SysMessageUser implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", userid=").append(userid);
         sb.append(", messageId=").append(messageId);
+        sb.append(", status=").append(status);
+        sb.append(", userName=").append(userName);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

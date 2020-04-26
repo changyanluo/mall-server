@@ -3,26 +3,8 @@ package com.platform.mall.dto;
 import java.math.BigDecimal;
 
 public class FlashOrder {
-    private long userId;
-    private long goodsId;
     private String goodsName;
     private BigDecimal price;
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public long getGoodsId() {
-        return goodsId;
-    }
-
-    public void setGoodsId(long goodsId) {
-        this.goodsId = goodsId;
-    }
 
     public String getGoodsName() {
         return goodsName;

@@ -11,6 +11,7 @@ public class Util {
 
     public static final String FLASH_GOODS_PREFIX = "flashGoods:";
     public static final String FLASH_USER_PREFIX = "flashLock:";
+    public static final String ONLINE_USER_PREFIX = "user:";
     private static final String UNKNOWN = "unknown";
     private static final String LOCALHOST = "127.0.0.1";
     private static final String SEPARATOR = ",";

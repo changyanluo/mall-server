@@ -554,6 +554,76 @@ public class MallGoodsExample {
             addCriterion("state not between", value1, value2, "state");
             return (Criteria) this;
         }
+
+        public Criteria andProducerIsNull() {
+            addCriterion("producer is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerIsNotNull() {
+            addCriterion("producer is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerEqualTo(String value) {
+            addCriterion("producer =", value, "producer");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerNotEqualTo(String value) {
+            addCriterion("producer <>", value, "producer");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerGreaterThan(String value) {
+            addCriterion("producer >", value, "producer");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerGreaterThanOrEqualTo(String value) {
+            addCriterion("producer >=", value, "producer");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerLessThan(String value) {
+            addCriterion("producer <", value, "producer");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerLessThanOrEqualTo(String value) {
+            addCriterion("producer <=", value, "producer");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerLike(String value) {
+            addCriterion("producer like", value, "producer");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerNotLike(String value) {
+            addCriterion("producer not like", value, "producer");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerIn(List<String> values) {
+            addCriterion("producer in", values, "producer");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerNotIn(List<String> values) {
+            addCriterion("producer not in", values, "producer");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerBetween(String value1, String value2) {
+            addCriterion("producer between", value1, value2, "producer");
+            return (Criteria) this;
+        }
+
+        public Criteria andProducerNotBetween(String value1, String value2) {
+            addCriterion("producer not between", value1, value2, "producer");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

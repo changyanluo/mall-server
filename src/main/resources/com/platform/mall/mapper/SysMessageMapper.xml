@@ -3,7 +3,6 @@
 <mapper namespace="com.platform.mall.mapper.SysMessageMapper">
   <resultMap id="BaseResultMap" type="com.platform.mall.bean.SysMessage">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="distributed_id" jdbcType="BIGINT" property="distributedId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="create_time" jdbcType="DATE" property="createTime" />
@@ -68,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, distributed_id, title, content, create_time, message_type
+    id, title, content, create_time, message_type
   </sql>
   <select id="selectByExample" parameterType="com.platform.mall.bean.SysMessageExample" resultMap="BaseResultMap">
     select
@@ -101,13 +100,13 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.platform.mall.bean.SysMessage">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+    <selectKey keyProperty="id" keyColumn="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sys_message (distributed_id, title, content, 
-      create_time, message_type)
-    values (#{distributedId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=DATE}, #{messageType,jdbcType=INTEGER})
+    insert into sys_message (title, content, create_time, 
+      message_type)
+    values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, 
+      #{messageType,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.platform.mall.bean.SysMessage">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -115,9 +114,6 @@
     </selectKey>
     insert into sys_message
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="distributedId != null">
-        distributed_id,
-      </if>
       <if test="title != null">
         title,
       </if>
@@ -132,9 +128,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="distributedId != null">
-        #{distributedId,jdbcType=BIGINT},
-      </if>
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
       </if>
@@ -161,9 +154,6 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.distributedId != null">
-        distributed_id = #{record.distributedId,jdbcType=BIGINT},
-      </if>
       <if test="record.title != null">
         title = #{record.title,jdbcType=VARCHAR},
       </if>
@@ -184,7 +174,6 @@
   <update id="updateByExample" parameterType="map">
     update sys_message
     set id = #{record.id,jdbcType=BIGINT},
-      distributed_id = #{record.distributedId,jdbcType=BIGINT},
       title = #{record.title,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=DATE},
@@ -196,9 +185,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.platform.mall.bean.SysMessage">
     update sys_message
     <set>
-      <if test="distributedId != null">
-        distributed_id = #{distributedId,jdbcType=BIGINT},
-      </if>
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
       </if>
@@ -216,8 +202,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.platform.mall.bean.SysMessage">
     update sys_message
-    set distributed_id = #{distributedId,jdbcType=BIGINT},
-      title = #{title,jdbcType=VARCHAR},
+    set title = #{title,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=DATE},
       message_type = #{messageType,jdbcType=INTEGER}

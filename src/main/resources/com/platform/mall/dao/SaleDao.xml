@@ -3,7 +3,9 @@
 <mapper namespace="com.platform.mall.dao.SaleDao">
     <select id="getFlashGoods" resultType="com.platform.mall.dto.FlashOrder"
             parameterType="com.platform.mall.dto.FlashMessage">
-        select b.goods_name,a.flash_price
+        select b.goods_name goodsName,
+        a.flash_price price,
+        b.producer
         from mall_flash_sale a
         inner join
         mall_goods b

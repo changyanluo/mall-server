@@ -6,6 +6,7 @@
     <!--应用名称-->
     <property name="APP_NAME" value="platform-admin"/>
     <logger name="com.platform.mall.mapper" level="DEBUG" />
+    <logger name="com.platform.mall.dao" level="DEBUG" />
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>

@@ -34,7 +34,6 @@ public class UserController {
         if(authorities == null)
             return Result.failed("用户名或密码不正确");
         else {
-
             return Result.success(RequestContextHolder.getRequestAttributes().getSessionId(), authorities);
         }
     }

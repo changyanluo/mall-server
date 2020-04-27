@@ -192,66 +192,6 @@ public class SysMessageExample {
             return (Criteria) this;
         }
 
-        public Criteria andDistributedIdIsNull() {
-            addCriterion("distributed_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDistributedIdIsNotNull() {
-            addCriterion("distributed_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDistributedIdEqualTo(Long value) {
-            addCriterion("distributed_id =", value, "distributedId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDistributedIdNotEqualTo(Long value) {
-            addCriterion("distributed_id <>", value, "distributedId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDistributedIdGreaterThan(Long value) {
-            addCriterion("distributed_id >", value, "distributedId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDistributedIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("distributed_id >=", value, "distributedId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDistributedIdLessThan(Long value) {
-            addCriterion("distributed_id <", value, "distributedId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDistributedIdLessThanOrEqualTo(Long value) {
-            addCriterion("distributed_id <=", value, "distributedId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDistributedIdIn(List<Long> values) {
-            addCriterion("distributed_id in", values, "distributedId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDistributedIdNotIn(List<Long> values) {
-            addCriterion("distributed_id not in", values, "distributedId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDistributedIdBetween(Long value1, Long value2) {
-            addCriterion("distributed_id between", value1, value2, "distributedId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDistributedIdNotBetween(Long value1, Long value2) {
-            addCriterion("distributed_id not between", value1, value2, "distributedId");
-            return (Criteria) this;
-        }
-
         public Criteria andTitleIsNull() {
             addCriterion("title is null");
             return (Criteria) this;

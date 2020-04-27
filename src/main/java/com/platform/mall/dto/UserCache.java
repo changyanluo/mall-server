@@ -3,6 +3,7 @@ package com.platform.mall.dto;
 import java.io.Serializable;
 import java.util.List;
 
+//redis中的用户缓存信息
 public class UserCache implements Serializable {
     long userId;
     String userName;

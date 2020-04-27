@@ -29,12 +29,21 @@ public class AuthFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
         response.setCharacterEncoding("UTF-8");
         String url = request.getRequestURI();
-        if("/user/login".equals(url) || "OPTIONS".equals(request.getMethod())) {
+        if("/webSocket".equals(url)){
+            String token = request.getParameter("token");
+            if(token == null || redisService.hasKey(Util.ONLINE_USER_PREFIX + token)){
+                response.getWriter().write("cannot connect:identification failed!");
+            }
+            else{
+                filterChain.doFilter(servletRequest, servletResponse);
+            }
+        }
+        else if("/user/login".equals(url) || "OPTIONS".equals(request.getMethod())) {
             filterChain.doFilter(servletRequest, servletResponse);
         }
         else{
             //身份验证
-            String token = request.getHeader("Authorization");
+            String token  = request.getHeader("Authorization");
             if (token != null && redisService.hasKey(Util.ONLINE_USER_PREFIX + token)) {
                 //身份验证通过，开始权限验证
                 UserCache userCache = (UserCache) redisService.get(Util.ONLINE_USER_PREFIX + token);

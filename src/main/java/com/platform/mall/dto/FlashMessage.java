@@ -1,5 +1,6 @@
 package com.platform.mall.dto;
 
+//商品秒杀消息
 public class FlashMessage {
     private String userName;
     private long flashId;

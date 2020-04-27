@@ -6,8 +6,6 @@ import java.util.Date;
 public class SysMessage implements Serializable {
     private Long id;
 
-    private Long distributedId;
-
     private String title;
 
     private String content;
@@ -24,14 +22,6 @@ public class SysMessage implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getDistributedId() {
-        return distributedId;
-    }
-
-    public void setDistributedId(Long distributedId) {
-        this.distributedId = distributedId;
     }
 
     public String getTitle() {
@@ -73,7 +63,6 @@ public class SysMessage implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", distributedId=").append(distributedId);
         sb.append(", title=").append(title);
         sb.append(", content=").append(content);
         sb.append(", createTime=").append(createTime);

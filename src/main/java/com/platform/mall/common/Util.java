@@ -7,11 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+//工具类
 public class Util {
 
     public static final String FLASH_GOODS_PREFIX = "flashGoods:";
     public static final String FLASH_USER_PREFIX = "flashLock:";
     public static final String ONLINE_USER_PREFIX = "user:";
+    public static final Long SESSION_TIME_OUT = 3600L;
     private static final String UNKNOWN = "unknown";
     private static final String LOCALHOST = "127.0.0.1";
     private static final String SEPARATOR = ",";

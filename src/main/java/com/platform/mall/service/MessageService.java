@@ -11,5 +11,5 @@ public interface MessageService {
     int sendMessage(SysMessage message, List<Long> userIdList);
 
     //拉取用户消息
-    List<SysMessage> getUserMessages(long userId);
+    List<SysMessage> getUserMessages(String userName);
 }

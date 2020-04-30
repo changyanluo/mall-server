@@ -8,4 +8,11 @@
             #{item}, 0)
         </foreach>
     </insert>
+    <select id="getUserMessage" resultType="com.platform.mall.bean.SysMessage">
+        SELECT a.* FROM
+        sys_message a INNER JOIN sys_message_user b
+        on a.id = b.message_id
+        where b.user_name = #{userName}
+        and b.status = 0
+    </select>
 </mapper>

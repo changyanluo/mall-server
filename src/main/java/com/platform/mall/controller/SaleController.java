@@ -19,6 +19,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,8 +37,6 @@ public class SaleController {
     private SaleDao saleDao;
     @Autowired
     private KafkaTemplate<String,String> kafkaTemplate;
-    //标记商品是否售完的标记
-    private static Map<Long,Boolean> localOver = new HashMap<>();
 
     @ApiOperation("秒杀")
     @RequestMapping(value = "/flash", method = RequestMethod.POST)
@@ -45,19 +44,21 @@ public class SaleController {
                         @RequestParam("flashId") long flashId,
                         HttpServletRequest request) throws Exception{
         //获取分布式锁，每个用户每秒钟最多访问2次
+        Date now = new Date();
         String userName = (String)request.getAttribute("userName");
         if(!redisService.getDistributedLock(Util.FLASH_USER_PREFIX + userName)){
             return Result.failed("三秒防刷!");
         }
-        //先根据内存中的标记判断该商品是否被强光，减少resdis访问
-        if(localOver.containsKey(goodsId)&&localOver.get(goodsId).equals(true)){
-            return Result.failed("已被抢光!");
-        }
-        //预减库存
+        //读取redis信息，先判断是否在秒杀时间内，再预减库存
         String goodsKey = Util.FLASH_GOODS_PREFIX + goodsId;
-        Long stock = redisService.hDecr(goodsKey,"stock", 1L);
+        Map<Object,Object> goodsCache = redisService.hGetAll(goodsKey);
+        Date startDate = (Date)goodsCache.get("startDate");
+        Date endDate = (Date)goodsCache.get("endDate");
+        if(startDate.after(now)|| endDate.before(now)){
+            return Result.failed("不再秒杀时间范围内!");
+        }
+        Long stock = redisService.hDecr(goodsKey,"stock",1L);
         if(stock < 0){
-            localOver.put(goodsId,true);
             saleDao.updateGoodsStateById(goodsId,0);
             return Result.failed("已被抢光!");
         }
@@ -67,7 +68,7 @@ public class SaleController {
         message.setGoodsId(goodsId);
         message.setUserName(userName);
         String serizeMsg = Util.toJsonString(message);
-        logger.info("发送秒杀消息" + serizeMsg);
+        //把秒杀的商品信息传到消息队列异步下单
         kafkaTemplate.send("flashSale",serizeMsg);
         return Result.success("");
     }
@@ -116,5 +117,11 @@ public class SaleController {
         else{
             return Result.failed("秒杀信息写入redis失败!");
         }
+    }
+
+    @ApiOperation("获取用户待秒杀商品")
+    @RequestMapping(value = "/getCustomerFlashGoods", method = RequestMethod.POST)
+    public Result getCustomerFlashGoods() {
+            return Result.success(saleService.getCustomerFlashGoods());
     }
 }

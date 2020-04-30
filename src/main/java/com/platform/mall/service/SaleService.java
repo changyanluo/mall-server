@@ -4,7 +4,10 @@ import com.platform.mall.bean.MallFlashSale;
 import com.platform.mall.bean.MallGoods;
 import com.platform.mall.bean.MallOrder;
 import com.platform.mall.common.PageList;
+import com.platform.mall.dto.FlashGoods;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 //商城服务接口
 public interface SaleService {
@@ -27,4 +30,7 @@ public interface SaleService {
     //添加秒杀商品
     @Transactional
     int addFlashGoods(MallFlashSale mallFlashSale);
+
+    //获取秒杀商品列表
+    List<FlashGoods> getCustomerFlashGoods();
 }

@@ -37,11 +37,11 @@ public class UsrNotification {
         try{
             persistMessage(userMessage);
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("{title:");
+            stringBuilder.append("{\"title\":\"");
             stringBuilder.append(userMessage.getTitle());
-            stringBuilder.append(",content:");
+            stringBuilder.append("\",\"content\":\"");
             stringBuilder.append(userMessage.getContent());
-            stringBuilder.append("}");
+            stringBuilder.append("\"}");
             webSocketServer.sendInfo(userMessage.getReceivers(),stringBuilder.toString());
         }
         catch (Exception ex){

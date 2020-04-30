@@ -1,11 +1,13 @@
 package com.platform.mall.controller;
 
 import com.platform.mall.bean.SysMenu;
+import com.platform.mall.bean.SysMessage;
 import com.platform.mall.bean.SysRole;
 import com.platform.mall.bean.SysUser;
 import com.platform.mall.common.PageList;
 import com.platform.mall.common.Result;
 import com.platform.mall.dto.UserMenu;
+import com.platform.mall.service.MessageService;
 import com.platform.mall.service.UserService;
 import com.platform.mall.service.impl.MenuServiceImpl;
 import io.swagger.annotations.Api;
@@ -25,6 +27,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private MenuServiceImpl menuService;
+    @Autowired
+    private MessageService messageService;
 
     @ApiOperation("用户登录")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
@@ -84,5 +88,11 @@ public class UserController {
                               @RequestParam("roleIdList") List<Long> roleIdList){
 
         return Result.success(userService.updateUserRole(userId,roleIdList));
+    }
+
+    @ApiOperation("获取用户消息列表")
+    @RequestMapping(value = "/getUserMessage",method = RequestMethod.POST)
+    public Result<List<SysMessage>> getUserMessage(@RequestParam("userName") String userName){
+        return Result.success(messageService.getUserMessages(userName));
     }
 }

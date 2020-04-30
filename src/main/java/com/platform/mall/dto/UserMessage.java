@@ -2,7 +2,7 @@ package com.platform.mall.dto;
 
 import java.util.List;
 
-//用户消息通知数据
+//向消息队列发送的用户消息通知数据
 public class UserMessage {
 
     private String title;

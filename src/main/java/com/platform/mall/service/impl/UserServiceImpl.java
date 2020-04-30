@@ -65,8 +65,8 @@ public class UserServiceImpl implements UserService{
                 String token = redisService.get(userName).toString();
                 redisService.del(token);
             }
-            redisService.set(redisKey,userCache);
-            redisService.set(userName,redisKey);
+            redisService.set(redisKey,userCache,Util.SESSION_TIME_OUT);
+            redisService.set(userName,redisKey,Util.SESSION_TIME_OUT);
             return authNameList;
         }
         else

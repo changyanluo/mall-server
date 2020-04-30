@@ -5,7 +5,7 @@ import com.platform.mall.bean.*;
 import com.platform.mall.common.PageList;
 import com.platform.mall.common.Util;
 import com.platform.mall.dao.SaleDao;
-import com.platform.mall.dao.UserDao;
+import com.platform.mall.dto.FlashGoods;
 import com.platform.mall.mapper.MallFlashSaleMapper;
 import com.platform.mall.mapper.MallGoodsMapper;
 import com.platform.mall.mapper.MallOrderMapper;
@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SaleServiceImpl implements SaleService{
@@ -75,21 +73,27 @@ public class SaleServiceImpl implements SaleService{
         mallFlashSaleMapper.insert(mallFlashSale);
         //更新商品状态为'秒杀中'
         saleDao.updateGoodsStateById(mallFlashSale.getGoodsId(),1);
-        /*将秒杀商品的信息存入redis,是以flashGoods{商品编号}为key的hash,
-        hash中存储秒杀数量，秒杀价格
-        */
+        /*将秒杀商品的信息存入redis,包括库存，开始时间和结束时间,用map存储*/
         try {
+            Date now = new Date();
             String key = Util.FLASH_GOODS_PREFIX + mallFlashSale.getGoodsId();
-            long duration = (mallFlashSale.getEndDate().getTime() - mallFlashSale.getStartDate().getTime())/1000;
-            Map<String,Object> map = new HashMap<>();
-            map.put("price",mallFlashSale.getFlashPrice());
-            map.put("stock",mallFlashSale.getStockCount());
-            redisService.hSetAll(key,map,duration);
+            long duration = (mallFlashSale.getEndDate().getTime() - now.getTime())/1000;
+            Map<String,Object> goodsMap = new HashMap<>();
+            goodsMap.put("stock",mallFlashSale.getStockCount());
+            goodsMap.put("startDate",mallFlashSale.getStartDate());
+            goodsMap.put("endDate",mallFlashSale.getEndDate());
+            redisService.hSetAll(key,goodsMap,duration);
         }
         catch (Exception ex){
             //秒杀信息写入redis失败，返回0
             return 0;
         }
         return 1;
+    }
+
+    @Override
+    public List<FlashGoods> getCustomerFlashGoods() {
+        //查询包含当前时间的秒杀活动
+        return saleDao.getCustomerFlashGoods();
     }
 }

@@ -13,6 +13,20 @@
         where a.id = #{flashMessage.flashId}
         and a.goods_id = #{flashMessage.goodsId}
     </select>
+    <select id="getCustomerFlashGoods" resultType="com.platform.mall.dto.FlashGoods">
+       SELECT b.goods_name goodsName,
+              b.title,
+              b.image,
+              a.id flashId,
+              a.goods_id goodsId,
+              a.flash_price flashPrice,
+              a.start_date startDate,
+              a.end_date endDate
+        from mall_flash_sale a
+        INNER JOIN mall_goods b
+        on a.goods_id = b.id
+        WHERE a.end_date > now()
+    </select>
     <update id="updateGoodsStateById">
         UPDATE mall_goods set state = #{state}
         where id = #{goodsId}

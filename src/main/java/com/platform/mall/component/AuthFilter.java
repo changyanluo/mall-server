@@ -31,7 +31,7 @@ public class AuthFilter implements Filter {
         String url = request.getRequestURI();
         if("/webSocket".equals(url)){
             String token = request.getParameter("token");
-            if(token == null || redisService.hasKey(Util.ONLINE_USER_PREFIX + token)){
+            if(token == null || !redisService.hasKey(Util.ONLINE_USER_PREFIX + token)){
                 response.getWriter().write("cannot connect:identification failed!");
             }
             else{

@@ -1,13 +1,11 @@
 package com.platform.mall.controller;
 
-import com.platform.mall.bean.SysMenu;
-import com.platform.mall.bean.SysMessage;
-import com.platform.mall.bean.SysRole;
-import com.platform.mall.bean.SysUser;
+import com.platform.mall.bean.*;
 import com.platform.mall.common.PageList;
 import com.platform.mall.common.Result;
 import com.platform.mall.dto.UserMenu;
 import com.platform.mall.service.MessageService;
+import com.platform.mall.service.RedisService;
 import com.platform.mall.service.UserService;
 import com.platform.mall.service.impl.MenuServiceImpl;
 import io.swagger.annotations.Api;
@@ -15,6 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -29,17 +29,35 @@ public class UserController {
     private MenuServiceImpl menuService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private RedisService redisService;
 
     @ApiOperation("用户登录")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public Result<List<String>> login(@RequestParam("userName") String userName,@RequestParam("password") String password)
     {
+        //登录成功后返回该用户的操作权限
         List<String> authorities = userService.login(userName,password);
         if(authorities == null)
             return Result.failed("用户名或密码不正确");
         else {
             return Result.success(RequestContextHolder.getRequestAttributes().getSessionId(), authorities);
         }
+    }
+
+    @ApiOperation("用户登出")
+    @RequestMapping(value = "/logout",method = RequestMethod.POST)
+    public Result<String> logout(HttpServletRequest request)
+    {
+        String userName = (String)request.getAttribute("userName");
+        if(!redisService.hasKey(userName)){
+            return Result.failed("该用户已登出！");
+        }
+        //删除redis中的用户信息
+        String token = redisService.get(userName).toString();
+        redisService.del(token);
+        redisService.del(userName);
+        return Result.success("登出成功!");
     }
 
     @ApiOperation("分页获取用户列表")
@@ -94,5 +112,14 @@ public class UserController {
     @RequestMapping(value = "/getUserMessage",method = RequestMethod.POST)
     public Result<List<SysMessage>> getUserMessage(@RequestParam("userName") String userName){
         return Result.success(messageService.getUserMessages(userName));
+    }
+
+    @ApiOperation("获取用户操作日志")
+    @RequestMapping(value = "/getOperationLog",method = RequestMethod.POST)
+    public Result<PageList<SysLog>> getOperationLog(@RequestParam("userName") String userName,
+                                                @RequestParam("actionName") String actionName,
+                                                @RequestParam("pageIndex") int pageIndex,
+                                                @RequestParam("pageSize") int pageSize){
+        return Result.success(messageService.getOperationLog(userName,actionName,pageIndex,pageSize));
     }
 }

@@ -36,7 +36,7 @@
         sys_role_authority d ON a.id = b.role_id AND a.id = d.role_id
         AND c.id = d.authority_id
         WHERE
-        b.user_id = 1 AND a.status = 1
+        b.user_id = #{userId} AND a.status = 1
         AND c.status = 1
     </select>
     <select id="getMenubyRoleId" resultType="com.platform.mall.bean.SysMenu">

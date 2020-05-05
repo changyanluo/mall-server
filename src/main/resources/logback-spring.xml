@@ -5,9 +5,24 @@
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
     <!--应用名称-->
     <property name="APP_NAME" value="platform-admin"/>
+    <property name="logPath" value="./serverlog"></property>
     <logger name="com.platform.mall.mapper" level="DEBUG" />
     <logger name="com.platform.mall.dao" level="DEBUG" />
+
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logPath}/%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+            </pattern>
+        </layout>
+    </appender>
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>

@@ -13,6 +13,6 @@
         sys_message a INNER JOIN sys_message_user b
         on a.id = b.message_id
         where b.user_name = #{userName}
-        and b.status = 0
+        and b.status = 0 LIMIT 10
     </select>
 </mapper>

@@ -48,7 +48,7 @@ public class FlashSale {
                 userMessage.setContent(ex.getMessage());
             }
             finally {
-                userMessage.setReceivers(Collections.singletonList(flashOrders.get(0).getProducer()));
+                userMessage.setReceivers(Collections.singletonList(flashMessage.getUserName()));
                 userMessage.setType(0);
                 try {
                     kafkaTemplate.send("usrNotification", Util.toJsonString(userMessage));
@@ -71,6 +71,7 @@ public class FlashSale {
         mallOrder.setGoodsPrice(flashOrder.getPrice());
         mallOrder.setStatus(0);
         mallOrder.setCreateDate(new Date());
+        mallOrder.setPayDate(null);
         mallOrderMapper.insert(mallOrder);
     }
 }

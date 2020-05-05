@@ -39,7 +39,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         return authorityMapper.updateByPrimaryKey(authority);
     }
 
-    //将菜单转换为树形数据
+    //将权限转换为树形数据
     public List<UserAuthority> treeList(List<SysActionAuthority> authorityList){
         return authorityList.stream()
                 .filter(ele->ele.getParentId() == null)

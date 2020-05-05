@@ -35,6 +35,7 @@ public class WebSocketServer {
     public void onClose(Session session){
         String sessionId = session.getRequestParameterMap().get("token").get(0);
         sessionPools.remove(sessionId);
+        logger.info("websocket已关闭!");
     }
 
     //收到客户端信息
@@ -50,7 +51,7 @@ public class WebSocketServer {
     }
 
     //发送消息
-    public void sendMessage(Session session, String message) {
+    public  void sendMessage(Session session, String message) {
         if(session != null){
             try {
                 session.getBasicRemote().sendText(message);
